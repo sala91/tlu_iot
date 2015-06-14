@@ -5,6 +5,9 @@
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
   'mobile-angular-ui',
+  // mobile services script index filei ja defineerida moduleis ehk siin <script src='http://ajax.aspnetcdn.com/ajax/mobileservices/MobileServices.Web-1.1.2.min.js'></script>
+   'app.services',
+   'azure-mobile-service.module',
   
   // touch/drag feature: this is from 'mobile-angular-ui.gestures.js'
   // it is at a very beginning stage, so please be careful if you like to use
@@ -186,92 +189,63 @@ app.directive('carouselItem', function($drag) {
 // For this trivial demo we have just a unique MainController 
 // for everything
 //
-app.controller('MainController', function($rootScope, $scope){
+app.controller('MainController', function ($rootScope, $scope) {
 
-  // User agent displayed in home page
-  $scope.userAgent = navigator.userAgent;
-  
-  // Needed for the loading screen
-  $rootScope.$on('$routeChangeStart', function(){
-    $rootScope.loading = true;
-  });
+    // User agent displayed in home page
+    $scope.userAgent = navigator.userAgent;
+    /*
+     $scope.uploadFile = function (element) {
+         var data = new FormData();
+         console.log(data)
+         data.append('file', $(element)[0].files[0]);
+         console.log(data)
+         
+         jQuery.ajax({
+             url: '../upload',
+             type: 'post',
+             data: data,
+             contentType: false,
+             processData: false,
+             success: function (response) {
+                 console.log(response);
+             },
+             error: function (jqXHR, textStatus, errorMessage) {
+                 alert('Error uploading: ' + errorMessage);
+             }
+         });
+     };
+   */
+    // Needed for the loading screen
+    $rootScope.$on('$routeChangeStart', function () {
+        $rootScope.loading = true;
+    });
 
-  $rootScope.$on('$routeChangeSuccess', function(){
-    $rootScope.loading = false;
-  });
+    $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.loading = false;
+    });
 
-  // Fake text i used here and there.
-  $scope.lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel explicabo, aliquid eaque soluta nihil eligendi adipisci error, illum corrupti nam fuga omnis quod quaerat mollitia expedita impedit dolores ipsam. Obcaecati.';
+    // 'Scroll' screen
+    // 
+    var scrollItems = [];
 
-  // 
-  // 'Scroll' screen
-  // 
-  var scrollItems = [];
-
-  for (var i=1; i<=100; i++) {
-    scrollItems.push('Item ' + i);
-  }
-
-  $scope.scrollItems = scrollItems;
-
-  $scope.bottomReached = function() {
-    alert('Congrats you scrolled to the end of the list!');
-  }
-
-  // 
-  // Right Sidebar
-  // 
-  $scope.chatUsers = [
-    { name: 'Carlos  Flowers', online: true },
-    { name: 'Byron Taylor', online: true },
-    { name: 'Jana  Terry', online: true },
-    { name: 'Darryl  Stone', online: true },
-    { name: 'Fannie  Carlson', online: true },
-    { name: 'Holly Nguyen', online: true },
-    { name: 'Bill  Chavez', online: true },
-    { name: 'Veronica  Maxwell', online: true },
-    { name: 'Jessica Webster', online: true },
-    { name: 'Jackie  Barton', online: true },
-    { name: 'Crystal Drake', online: false },
-    { name: 'Milton  Dean', online: false },
-    { name: 'Joann Johnston', online: false },
-    { name: 'Cora  Vaughn', online: false },
-    { name: 'Nina  Briggs', online: false },
-    { name: 'Casey Turner', online: false },
-    { name: 'Jimmie  Wilson', online: false },
-    { name: 'Nathaniel Steele', online: false },
-    { name: 'Aubrey  Cole', online: false },
-    { name: 'Donnie  Summers', online: false },
-    { name: 'Kate  Myers', online: false },
-    { name: 'Priscilla Hawkins', online: false },
-    { name: 'Joe Barker', online: false },
-    { name: 'Lee Norman', online: false },
-    { name: 'Ebony Rice', online: false }
-  ];
-
-  //
-  // 'Forms' screen
-  //  
-  $scope.rememberMe = true;
-  $scope.email = 'me@example.com';
-  
-  $scope.login = function() {
-    alert('You submitted the login form');
-  };
-
-  // 
-  // 'Drag' screen
-  // 
-  $scope.notices = [];
-  
-  for (var j = 0; j < 10; j++) {
-    $scope.notices.push({icon: 'envelope', message: 'Notice ' + (j + 1) });
-  }
-
-  $scope.deleteNotice = function(notice) {
-    var index = $scope.notices.indexOf(notice);
-    if (index > -1) {
-      $scope.notices.splice(index, 1);
+    for (var i = 1; i <= 100; i++) {
+        scrollItems.push('Item ' + i);
     }
-  };
+
+    $scope.scrollItems = scrollItems;
+
+    $scope.bottomReached = function () {
+        alert('Congrats you scrolled to the end of the list!');
+    }
+
+    // 'Forms' screen
+    //  
+    $scope.rememberMe = true;
+    $scope.email = 'me@example.com';
+
+    $scope.login = function () {
+        alert('You submitted the login form');
+    };
+
+
 });

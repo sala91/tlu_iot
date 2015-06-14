@@ -1,26 +1,119 @@
-<div ui-content-for="title">
-  <span>Scroll</span>
+<div ui-content-for="Add plant">
+  <span>Add plant</span>
 </div>
+
+
+
 
 <div class="scrollable" ui-state="searchBar">
-  <input
-    ng-if="Ui.active('searchBar')"
-    type="search"
-    class="form-control scrollable-header"
-    placeholder="Search.." />
 
-  <div class="scrollable-content" ui-scroll-bottom='bottomReached()'>
-    <div class="list-group">
-      <a ng-repeat="item in scrollItems" href="#" class="list-group-item">
-        {{ item }} <i class="fa fa-chevron-right pull-right"></i>
-      </a>
+    <div >
+        <input type="file" name="file0" onchange="console.log(angular.element(this).scope())" />
+        <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" />
     </div>
-  </div>
+    
+    <div class="form-group has-success has-feedback">
+        <label>Plant name</label>
+        <input type="text"
+               ng-model="text"
+               class="form-control"
+               placeholder="Enter plant name">
+    </div>
+    <div class="form-group has-success has-feedback">
+        <label>Rasp ID</label>
+        <input type="text"
+               ng-model="text"
+               class="form-control"
+               placeholder="Enter raspberry ID">
+    </div>
+    <div class="form-group has-success has-feedback">
+        <label>Humidity</label>
+        <div class="btn-group pull-right">
+            <a ui-turn-on='myDropdown' class='btn'>
+                <i class="fa fa-ellipsis-v"></i>
+            </a>
+            <ul class="dropdown-menu"
+                ui-outer-click="Ui.turnOff('myDropdown')"
+                ui-outer-click-if="Ui.active('myDropdown')"
+                role="menu"
+                ui-show="myDropdown"
+                ui-state="myDropdown"
+                ui-turn-off="myDropdown">
+                <label>Humidity</label>
+                <li><a>Dry soil</a></li>
+                <li><a>Humid soil</a></li>
+                <li><a>Wet soil</a></li>
 
-  <a class="btn btn-block btn-lg btn-primary scrollable-footer" ui-toggle='searchBar'>
-    <i class="fa fa-search"></i> 
-    <span ui-hide="searchBar">Show</span>
-    <span ui-show="searchBar">Hide</span>
-    Search Bar
-  </a>
-</div>
+            </ul>
+
+        </div>
+    </div>
+        <div class="form-group has-success has-feedback">
+            <div class="btn-group pull-left">
+                <label>Max temp</label>
+                <input type="text"
+                       ng-model="text"
+                       class="form-control"
+                       placeholder="Max temp">
+            </div>
+
+            <div class="btn-group pull-left">
+                <label>Min temp</label>
+                <input type="text"
+                       ng-model="text"
+                       class="form-control"
+                       placeholder="Min temp">
+            </div>
+        </div>
+    <br />
+    <br />
+    <br />
+    <div class="btn-group">
+        <label>Privacy</label>
+        <a ui-turn-on='myDropdown1' class='btn'>
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <ul class="dropdown-menu"
+            ui-outer-click="Ui.turnOff('myDropdown1')"
+            ui-outer-click-if="Ui.active('myDropdown1')"
+            role="menu"
+            ui-show="myDropdown1"
+            ui-state="myDropdown1"
+            ui-turn-off="myDropdown1">
+            <li><a>Private</a></li>
+            <li><a>Public</a></li>
+
+        </ul>
+
+    </div>
+
+   
+    <div class="form-group has-success has-feedback">
+        <label>About</label>
+        <textarea type="textarea"
+                  ng-model="textarea"
+                  class="form-control"
+                  placeholder="Info about plant"><</textarea>
+    </div>
+        
+
+
+
+
+        <div id="footer">
+            <div class="btn-group justified nav-tabs">
+                <a id="addPlant" class="btn btn-default" href="#/">
+                    Submit
+                </a>
+            </div>
+            <div class="btn-group justified nav-tabs">
+                <a id="profile" onclick="lightUpActive(profile, plants)" class="btn btn-default" href="#/">
+                    Profile
+                </a>
+                <a id="plants" onclick="lightUpActive(plants, profile)" class=" btn btn-default" href="#home">
+                    Plants
+                </a>
+            </div>
+        </div>
+
+    </div>

@@ -1,38 +1,6 @@
 <div class="scrollable">
     <div class="scrollable-content">
-        <div ng-app="app" ng-controller="LineCtrl">
 
-            <div id="statid">
-                <div class="chart-sz">
-                    <canvas id="line" class="chart chart-line ng-isolate-scope"
-                            data="data" labels="labels" legend="false" click="onClick"
-                            hover="onHover" series="series" height="261" width="523"></canvas>
-                </div>
-            </div>
-
-            <script>
-                angular.module("app", ["chart.js"]).controller("LineCtrl", function ($scope) {
-
-                    $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-                    /*
-                        Graafiku legend
-                        $scope.series = ['Pinnase niiskustase',];
-                    */
-                    $scope.data = [
-                        [132, 125, 100, 80, 74, 70, 65],
-                    ];
-
-                    /*
-                    $scope.onClick = function (points, evt) {
-                    console.log(points, evt);
-                    };
-                    */
-                });
-            </script>
-
-            <script src="Chart.js/Chart.min.js"></script>
-            <script src="dist/angular-chart.js"></script>
-        </div>
         
 
         <div id="endbtn" class="btn-group justified nav-tabs">
@@ -44,10 +12,10 @@
         <div id="footer">
            
             <div class="btn-group justified nav-tabs">
-                <a id="profile" onclick="lightUpActive(profile, plants)" class="btn btn-default" href="#/">
+                <a id="profile" onclick="lightUpActive(profile, plants)" class="btn btn-default" href="#tabs">
                     Profile
                 </a>
-                <a id="plants" onclick="lightUpActive(plants, profile)" class="btn btn-default" href="#tabs">
+                <a id="plants" onclick="lightUpActive(plants, profile)" class="btn btn-default" href="#toggle">
                     Plants
                 </a>
             </div>

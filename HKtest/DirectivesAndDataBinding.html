@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html data-ng-app="demoApp">
+<head>
+	<title>
+		Using AngularJS Directives and Data Binding
+	</title>
+</head>
+
+<body>
+	<div >
+		<!--Placeholder for the views -->
+		<div data-ng-view =""></div> <!--SPA type of thinking -->
+	</div>
+ <!--   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-route.js"></script>-->
+<!-- <script  src="Scripts/angular.min.js"></script> -->
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular.min.js"></script>
+
+<script>
+    var demoApp = angular.module('demoApp', ['ngRoute']);
+
+	demoApp.config(function($routeProvider){
+		$routeProvider
+			.when('/',
+				{
+					controller:'SimpleController',
+					templateUrl: 'Partials/view1.html'
+				})
+			.when('/view2',
+				{
+					controller:'SimpleController',
+					templateUrl: '/Partials/view2.html'
+				})
+			.otherwi
+			.otherwise({ redirectTo: '/'})
+	});
+
+	demoApp.controller('SimpleController',function($scope){
+		$scope.customers = [
+			{ name:'John Smith', plant:'Potato', RaspId:'2AE3D'},
+			{ name:'John Doe', plant:'Tomato',RaspId:'HDkjd23'},
+			{ name: 'Jane Doe', plant:'Carrot',RaspId:'ksjdasl'},
+			{ name: 'Toomas Toots', plant:'Sunflower',RaspId:'ssdsa2'},
+			{ name: 'Maarja Maasikas', plant:'Strawberry',RaspId:'4r23ws'}
+		];
+
+		$scope.addCustomer = function(){
+			$scope.customers.push({ name:$scope.newCustemer.name, plant:$scope.newCustemer.plant});
+		}
+	});
+
+</script>
+	
+	
+</body>
+
+</html>
