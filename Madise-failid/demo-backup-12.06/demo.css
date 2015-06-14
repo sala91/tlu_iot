@@ -150,12 +150,10 @@ h1 {
 .list-group-item-home {
   padding: 20px; 
 }
-
 #wrap {
 	position:relative;
 	min-height:100%;
 }
-
 pre {
   text-align: left !important;
 }
@@ -163,7 +161,6 @@ pre {
 input.scrollable-header {
   border-bottom: 3px solid #ccc;
 }
-
 #footer {
 	position:absolute;
 	width:100%; height:;
@@ -171,7 +168,6 @@ input.scrollable-header {
 	background-color:;
 	border:;
 }
-
 #endbtn {
 	position:absolute;
 	width:100%; height:;
@@ -182,13 +178,6 @@ input.scrollable-header {
 #about{
     width:100%;
 }
-
-#info {
-	position:relative;
-	margin:0px auto;
-	width:100%;
-}
-
 
 
 

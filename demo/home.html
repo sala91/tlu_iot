@@ -1,120 +1,13 @@
 <div class="scrollable">
-    <div class="scrollable-content">
-        <div ng-app="app" ng-controller="LineCtrl">
-
-            <div id="statid">
-                <div class="chart-sz">
-                    <canvas id="line" class="chart chart-line ng-isolate-scope"
-                            data="data" labels="labels" legend="false" click="onClick"
-                            hover="onHover" series="series" height="261" width="523"></canvas>
-                </div>
-            </div>
-
-            <script>
-                angular.module("app", ["chart.js"]).controller("LineCtrl", function ($scope) {
-
-                    $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-                    /*
-                        Graafiku legend
-                        $scope.series = ['Pinnase niiskustase',];
-                    */
-                    $scope.data = [
-                        [132, 125, 100, 80, 74, 70, 65],
-                    ];
-
-                    /*
-                    $scope.onClick = function (points, evt) {
-                    console.log(points, evt);
-                    };
-                    */
-                });
-            </script>
-
-            <script src="Chart.js/Chart.min.js"></script>
-            <script src="dist/angular-chart.js"></script>
-        </div>
-        
-
-        <div id="endbtn" class="btn-group justified nav-tabs">
-            <a id="addPlant" class="btn btn-default" href="#scroll">
-                New plant
-            </a>
-        </div>
-
-        <div id="footer">
-           
-            <div class="btn-group justified nav-tabs">
-                <a id="profile" onclick="lightUpActive(profile, plants)" class="btn btn-default" href="#/">
-                    Profile
-                </a>
-                <a id="plants" onclick="lightUpActive(plants, profile)" class="btn btn-default" href="#tabs">
-                    Plants
-                </a>
-            </div>
-        </div>
-
-        <!--
-
-
-
-
-            <div class="list-group text-center">
-              <div class="list-group-item list-group-item-home">
-                <h1>Mobile Angular UI
-                Demo <small>1.2</small>
-                </h1>
-              </div>
-              <div class="list-group-item list-group-item-home media">
-                <div>
-                  <i class="fa fa-gamepad feature-icon text-primary"></i>
-                </div>
-                <div class="media-body">
-                    <h3 class="media-heading">Play around a little</h3>
-                    Open the sidebar and start testing features
-                </div>
-              </div>
-
-
-              <div class="list-group-item list-group-item-home media">
-                <div>
-                  <i class="fa fa-tachometer feature-icon  text-primary"></i>
-                </div>
-                <div class="media-body">
-                    <h3 class="media-heading">Test responsiveness and speed</h3>
-                    Scroll, tap, navigate, test that everything is smooth
-                </div>
-              </div>
-
-
-              <div class="list-group-item list-group-item-home media">
-                <div>
-                  <i class="fa fa-expand feature-icon  text-primary"></i>
-                </div>
-                <div class="media-body">
-                    <h3 class="media-heading">Resize your browser</h3>
-                    Stretch and squeeze your browser window to see both mobile and desktop versions.
-                </div>
-              </div>
-
-              <div class="list-group-item list-group-item-home media">
-                <div>
-                  <i class="fa fa-stethoscope feature-icon  text-primary"></i>
-                </div>
-                <div class="media-body">
-                    <h3 class="media-heading">Submit an issue</h3>
-                    <p>Please submit any issue you'll find, <a href="https://github.com/mcasimir/mobile-angular-ui/issues" target='blank' id='#home-report'>reporting</a> your user agent string:<br>
-                    </p>
-        <pre>{{userAgent}}</pre>
-                    <p>
-                      It would help a lot!
-                    </p>
-                </div>
-              </div>
-
-            </div>
-
-
-
-        -->
+	<div class="scrollable-content">
+		<div >
+			<h1 class="text-center"></h1>
+			<a id="plantDet" href="#plantDetail" ng-controller="LineCtrl" style="max-width:500px; max-height:300px;">
+				<canvas id="line" class="chart chart-line" data="data"
+				  labels="labels" legend="true" series="series"
+				  click="onClick">
+				</canvas> 
+			</a>
+		</div>
     </div>
 </div>

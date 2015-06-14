@@ -5,9 +5,6 @@
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
   'mobile-angular-ui',
-  'angularNumberPicker',
-  'chart.js',
-
   
   // touch/drag feature: this is from 'mobile-angular-ui.gestures.js'
   // it is at a very beginning stage, so please be careful if you like to use
@@ -24,14 +21,16 @@ var app = angular.module('MobileAngularUiExamples', [
 // in order to avoid unwanted routing.
 // 
 app.config(function($routeProvider) {
-  $routeProvider.when('/',              {templateUrl: 'forms.html', reloadOnSearch: false});
-  $routeProvider.when('/home',          {templateUrl: 'home.html', reloadOnSearch: false});
-  $routeProvider.when('/newplant',      {templateUrl: 'newplant.html', reloadOnSearch: false});
-  $routeProvider.when('/profile',       {templateUrl: 'profile.html', reloadOnSearch: false});
-  $routeProvider.when('/plantDetail',   {templateUrl: 'plantDetail.html', reloadOnSearch: false});
-  $routeProvider.when('/plantslist',    {templateUrl: 'plantslist.html', reloadOnSearch: false});
-  $routeProvider.when('/badgeslist',    {templateUrl: 'badgeslist.html', reloadOnSearch: false});
-
+  $routeProvider.when('/',              {templateUrl: 'home.html', reloadOnSearch: false});
+  $routeProvider.when('/newplant',        {templateUrl: 'newplant.html', reloadOnSearch: false}); 
+  $routeProvider.when('/toggle',        {templateUrl: 'toggle.html', reloadOnSearch: false}); 
+  $routeProvider.when('/profile',          {templateUrl: 'profile.html', reloadOnSearch: false}); 
+  $routeProvider.when('/accordion',     {templateUrl: 'accordion.html', reloadOnSearch: false}); 
+  $routeProvider.when('/overlay',       {templateUrl: 'overlay.html', reloadOnSearch: false}); 
+  $routeProvider.when('/forms',         {templateUrl: 'forms.html', reloadOnSearch: false});
+  $routeProvider.when('/dropdown',      {templateUrl: 'dropdown.html', reloadOnSearch: false});
+  $routeProvider.when('/drag',          {templateUrl: 'drag.html', reloadOnSearch: false});
+  $routeProvider.when('/carousel',      {templateUrl: 'carousel.html', reloadOnSearch: false});
 });
 
 //
@@ -219,16 +218,44 @@ app.controller('MainController', function($rootScope, $scope){
     alert('Congrats you scrolled to the end of the list!');
   }
 
-
+  // 
+  // Right Sidebar
+  // 
+  $scope.chatUsers = [
+    { name: 'Carlos  Flowers', online: true },
+    { name: 'Byron Taylor', online: true },
+    { name: 'Jana  Terry', online: true },
+    { name: 'Darryl  Stone', online: true },
+    { name: 'Fannie  Carlson', online: true },
+    { name: 'Holly Nguyen', online: true },
+    { name: 'Bill  Chavez', online: true },
+    { name: 'Veronica  Maxwell', online: true },
+    { name: 'Jessica Webster', online: true },
+    { name: 'Jackie  Barton', online: true },
+    { name: 'Crystal Drake', online: false },
+    { name: 'Milton  Dean', online: false },
+    { name: 'Joann Johnston', online: false },
+    { name: 'Cora  Vaughn', online: false },
+    { name: 'Nina  Briggs', online: false },
+    { name: 'Casey Turner', online: false },
+    { name: 'Jimmie  Wilson', online: false },
+    { name: 'Nathaniel Steele', online: false },
+    { name: 'Aubrey  Cole', online: false },
+    { name: 'Donnie  Summers', online: false },
+    { name: 'Kate  Myers', online: false },
+    { name: 'Priscilla Hawkins', online: false },
+    { name: 'Joe Barker', online: false },
+    { name: 'Lee Norman', online: false },
+    { name: 'Ebony Rice', online: false }
+  ];
 
   //
   // 'Forms' screen
   //  
   $scope.rememberMe = true;
   $scope.email = 'me@example.com';
- 
+  
   $scope.login = function() {
-	
     alert('You submitted the login form');
   };
 
@@ -249,35 +276,23 @@ app.controller('MainController', function($rootScope, $scope){
   };
 });
 
+angular.module('myApp', ['angularFileUpload']);
 
-
-// Number picker stuff
-/*
-var demo = angular.module('demo', ['angularNumberPicker']);
-
-demo.controller('DemoController', ['$scope', function($scope) {
-		console.log($scope.input);
-        $scope.input = {
-            num: 0
-        };
-
-        $scope.getNumber = function() {
-            alert('The number is: [' + $scope.input.num + ']');
-        };
-
-}]);
-*/
-
-//	Graafik
-
-app.controller("LineCtrl", function ($scope) {
-
-  $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-  $scope.series = ['Temp', 'Humidity', 'Sunlight'];
-  $scope.data = [
-    [90, 87, 93, 75, 60, 57, 55],
-	[55, 66, 33, 99, 22, 44, 35],
-	[66, 33, 39, 42, 49, 22, 87],
-  ];
-
-});
+var MyCtrl = [ '$scope', '$upload', function($scope, $upload) {
+  $scope.onFileSelect = function($files) {
+    //$files: an array of files selected, each file has name, size, and type.
+    for (var i = 0; i < $files.length; i++) {
+      var file = $files[i];
+      $scope.upload = $upload.upload({
+        url: 'server/upload/url', //upload.php script, node.js route, or servlet url
+        data: {myObj: $scope.myModelObj},
+        file: file,
+      }).progress(function(evt) {
+        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+      }).success(function(data, status, headers, config) {
+        // file is uploaded successfully
+        console.log(data);
+      });
+    }
+  };
+}];
