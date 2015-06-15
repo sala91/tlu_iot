@@ -36,8 +36,9 @@ app.constant('AzureMobileServiceClient', {
 app.config(function ($routeProvider) {
     $routeProvider.when('/', { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
+    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: 'plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/plantslist', {
         templateUrl: 'plantslist.html',
@@ -49,8 +50,35 @@ app.config(function ($routeProvider) {
             }
         }
     });
-    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
 
+    $routeProvider.when('/home', {
+        templateUrl: 'home.html',
+        reloadOnSearch: false,
+        controller: 'chartCtrl',
+        resolve: {
+            'plantCount': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            }
+        }
+    });
+
+    // Proov taimede informatsiooni kuvamiseks
+    $routeProvider.when('/plantinfo', {
+        templateUrl: 'plantinfo.html',
+        controller: 'plantinfo',
+        reloadOnSearch: false,
+        resolve: {
+            'plants': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            }
+        }
+    });
+
+});
+
+// Mingi controller 'plantinfo' proovimiseks
+app.controller('plantinfo', function ($scope, plants) {
+    $scope.plants = plants;
 });
 
 app.controller('plantslist', function ($scope, plants) {
@@ -119,11 +147,15 @@ app.controller("LineCtrl", function ($scope) {
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
     $scope.series = ['Temp', 'Humidity', 'Sunlight'];
     $scope.data = [
-      [90, 87, 93, 75, 60, 57, 55],
-      [55, 66, 33, 99, 22, 44, 35],
-      [66, 33, 39, 42, 49, 22, 87],
+        [0, 0, 0, 0, 0, 0, 0],
+        [5, 5, 5, 5, 5, 5, 5],
+        [10, 10, 10, 10, 10, 10, 10]
     ];
 
+});
+
+app.controller('chartCtrl', function ($scope, plantCount) {
+    $scope.plantCount = plantCount;
 });
 
 // Login controller
