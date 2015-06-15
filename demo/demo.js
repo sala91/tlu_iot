@@ -227,10 +227,19 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // For this trivial demo we have just a unique MainController 
 // for everything
 //
-app.controller('MainController', function ($rootScope, $scope, Azureservice) {
-    Azureservice.login('google');
+app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
+    if (!Azureservice.isLoggedIn()) {
+        Azureservice.login('facebook').then(function () {
+            $route.reload();
+        });
+        console.log('Logged user in');
+    } else {
+        console.log('Used already logged in');
+    }
     // User agent displayed in home page
     $scope.userAgent = navigator.userAgent;
+
+
 
     // Needed for the loading screen
     $rootScope.$on('$routeChangeStart', function () {
