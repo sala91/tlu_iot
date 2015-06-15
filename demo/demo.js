@@ -81,7 +81,7 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // For this trivial demo we have just a unique MainController 
 // for everything
 //
-app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
+app.controller('MainController', function ($rootScope, $scope, $route, $location, Azureservice) {
 
 
     // Needed for the loading screen
@@ -96,7 +96,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
  
 
     $scope.logoff = function () {
-        Azureservice.logoff();
+        Azureservice.logout();
         $location.path('/');
     }
 
