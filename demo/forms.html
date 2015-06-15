@@ -4,37 +4,7 @@
 
 <div class="scrollable">
  <div class="scrollable-content section">
-   
-  <form role="form" ng-submit='login()'>
-    <fieldset>
-      <!-- <legend>Login</legend> -->
-        <div class="form-group has-success has-feedback">
-          <label>Email</label>
-          <input type="email"
-                 ng-model="email"
-                 class="form-control"
-                 placeholder="Enter email">
-        </div>
 
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" 
-                 class="form-control"
-                 placeholder="Password">
-        </div>
-
-        <div class="form-group">
-          <label>Remember Me</label>
-          <ui-switch 
-            ng-model='rememberMe'></ui-switch>
-        </div>
-    </fieldset>
-    <hr>
-	 <div class="btn-group justified nav-tabs">
-        <a id="addPlant" class="btn btn-primary btn-block"  href="#/home">
-            Login
-        </a>
-            </div>  
       <div ng-click="loginfb();">
           <a class="btn btn-block btn-social btn-facebook">
               <i class="fa fa-facebook"></i> Sign in with Facebook
@@ -45,7 +15,5 @@
               <i class="fa fa-google-plus"></i> Sign in with Google
           </a>
       </div>  
-      
-  </form>
  </div>
 </div>

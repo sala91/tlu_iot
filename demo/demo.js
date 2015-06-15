@@ -82,8 +82,6 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // for everything
 //
 app.controller('MainController', function ($rootScope, $scope, $route, $location, Azureservice) {
-
-
     // Needed for the loading screen
     $rootScope.$on('$routeChangeStart', function () {
         $rootScope.loading = true;
@@ -94,7 +92,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
     });
 
  
-
+    // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
         $location.path('/');
@@ -132,6 +130,7 @@ app.controller("LineCtrl", function ($scope) {
 
 });
 
+// Login controller
 app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
@@ -139,17 +138,6 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
                     $route.reload();
                     console.log('from login controller');
             })
-            // User agent displayed in home page
-            $scope.userAgent = navigator.userAgent;
-
-            // Needed for the loading screen
-            $rootScope.$on('$routeChangeStart', function () {
-                $rootScope.loading = true;
-            });
-
-            $rootScope.$on('$routeChangeSuccess', function () {
-                $rootScope.loading = false;
-            });
         }
 
         $scope.logingo = function () {
@@ -157,21 +145,8 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
                     $route.reload();
                     console.log('from login controller');
             })
-            // User agent displayed in home page
-            $scope.userAgent = navigator.userAgent;
-
-            // Needed for the loading screen
-            $rootScope.$on('$routeChangeStart', function () {
-                $rootScope.loading = true;
-            });
-
-            $rootScope.$on('$routeChangeSuccess', function () {
-                $rootScope.loading = false;
-            });
         }
-    } // ending if statement
-    else {
+    } else {
         $location.path('/plantslist');
     }
-    
 });
