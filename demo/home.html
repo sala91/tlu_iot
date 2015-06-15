@@ -1,13 +1,12 @@
 <div class="scrollable">
-	<div class="scrollable-content">
-		<div >
-			<h1 class="text-center"></h1>
-			<a id="plantDet" href="#plantDetail" ng-controller="LineCtrl" style="max-width:500px; max-height:300px;">
-				<canvas id="line" class="chart chart-line" data="data"
-				  labels="labels" legend="true" series="series"
-				  click="onClick">
-				</canvas> 
-			</a>
-		</div>
+    <div class="scrollable-content">
+        <div id="plant-chart-location">
+            <a ng-repeat="item in plantCount" id="plantDet" href="#plantDetail" ng-controller="LineCtrl" style="max-width:500px; max-height:300px;">
+                <h4 class="text-center"><b>{{item.name}}</b></h4>
+                <canvas id="line" class="chart chart-line" data="data"
+                        labels="labels" legend="true" series="series"
+                        click="onClick"></canvas>
+            </a>
+        </div>
     </div>
 </div>

@@ -4,6 +4,12 @@ h1 {
   margin: 10px 0;
 }
 
+#plant-chart-location{
+	position:relative;
+	margin:0 auto;
+	left:0; right:0; top:10px;
+}
+
 .chat-user-avatar {
   font-size: 40px;
   background: #ccc;

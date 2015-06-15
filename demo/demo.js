@@ -50,6 +50,16 @@ app.config(function ($routeProvider) {
         }
     });
     $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
+    $routeProvider.when('/home', {
+        templateUrl: 'home.html',
+        reloadOnSearch: false,
+        controller: 'chartCtrl',
+        resolve: {
+            'plantCount': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            }
+        }
+    });
 
 });
 
@@ -124,6 +134,10 @@ app.controller("LineCtrl", function ($scope) {
       [66, 33, 39, 42, 49, 22, 87],
     ];
 
+});
+
+app.controller('chartCtrl', function ($scope, plantCount) {
+    $scope.plantCount = plantCount;
 });
 
 // Login controller
