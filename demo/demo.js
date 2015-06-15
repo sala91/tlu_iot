@@ -83,7 +83,7 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 //
 app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
     if (!Azureservice.isLoggedIn()) {
-        Azureservice.login('facebook').then(function () {
+        Azureservice.login('google').then(function () {
             $route.reload();
         });
         console.log('Logged user in');
