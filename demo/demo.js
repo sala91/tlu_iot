@@ -30,12 +30,13 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
+    $routeProvider.when('/',            { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/home',        { templateUrl: 'home.html', reloadOnSearch: false });
+    $routeProvider.when('/profile',     { templateUrl: 'profile.html', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: 'plantDetail.html', reloadOnSearch: false });
-    $routeProvider.when('/plantslist', {
+    $routeProvider.when('/newplant',    { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/badgeslist',  { templateUrl: 'badgeslist.html', controller: '', reloadOnSearch: false });
+    $routeProvider.when('/plantslist',  {
         templateUrl: 'plantslist.html',
         controller: 'plantslist',
         reloadOnSearch: false,
@@ -45,11 +46,24 @@ app.config(function ($routeProvider) {
             }
         }
     });
-    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
+    // Proov taimede informatsiooni kuvamiseks
+    $routeProvider.when('/plantinfo', {
+        templateUrl: 'plantinfo.html',
+        controller: 'plantinfo',
+        reloadOnSearch: false,
+        resolve: {
+            'plants': function(Azureservice) {
+                return Azureservice.getAll('plant');
+            }
+        }
+    });
 
 });
 
-
+// Mingi controller 'plantinfo' proovimiseks
+app.controller('plantinfo', function ($scope, plants) {
+    $scope.plants = plants;
+});
 
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
@@ -91,7 +105,6 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
- 
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();

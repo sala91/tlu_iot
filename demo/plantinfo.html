@@ -2,10 +2,11 @@
     <div class="scrollable-content section">
 
         <div class="list-group-item list-group-item-home media text-justify">
-            <div id="info">
-                <i class="fa fa-user feature-icon text-primary pull-left"></i>
+            <div id="info" ng-repeat="item in plants">
                 <h1>Plant name: </h1>
-                <h3>Raspberry ID:</h3>
+                {{ item.name }}
+                <h3>Raspberry ID: </h3>
+                {{ item.raspberry_id }}
             </div>
         </div>
 
