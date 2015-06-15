@@ -30,12 +30,13 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: 'forms.html', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
+    $routeProvider.when('/',            { templateUrl: 'forms.html', reloadOnSearch: false });
+    $routeProvider.when('/home',        { templateUrl: 'home.html', reloadOnSearch: false });
+    $routeProvider.when('/newplant',    { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/badgeslist',  { templateUrl: 'badgeslist.html', controller: 'badgeslist', reloadOnSearch: false });
+    $routeProvider.when('/profile',     { templateUrl: 'profile.html', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: 'plantDetail.html', reloadOnSearch: false });
-    $routeProvider.when('/plantslist', {
+    $routeProvider.when('/plantslist',  {
         templateUrl: 'plantslist.html',
         controller: 'plantslist',
         reloadOnSearch: false,
@@ -45,16 +46,20 @@ app.config(function ($routeProvider) {
             }
         }
     });
-    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
 
 });
 
+//  Controller 'badgeslist' objektide kuvamiseks
+app.controller('badgeslist', function ($scope, badges) {
+    $scope.badges = badges;
+});
 
-
+//  Controller 'plantslist' objektide kuvamiseks
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
 });
 
+//  Controller 'newplant' objektide lisamiseks
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
@@ -104,10 +109,6 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
         $rootScope.loading = false;
     });
 
- 
-
-
-
     //
     // 'Forms' screen
     //  
@@ -119,15 +120,9 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
         alert('You submitted the login form');
     };
 
-
 });
 
-
-
-
-
-//	Graafik
-
+//  Graafik
 app.controller("LineCtrl", function ($scope) {
 
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
