@@ -82,19 +82,7 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // for everything
 //
 app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
-    /*
-    if (!Azureservice.isLoggedIn()) {
-        Azureservice.login('google').then(function () {
-            $route.reload();
-        });
-        console.log('Logged user in');
-    } else {
-        console.log('Used already logged in');
-    }
-    // User agent displayed in home page
-    $scope.userAgent = navigator.userAgent;
 
-    */
 
     // Needed for the loading screen
     $rootScope.$on('$routeChangeStart', function () {
@@ -107,7 +95,10 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
 
  
 
-
+    $scope.logoff = function () {
+        Azureservice.logoff();
+        $location.path('/');
+    }
 
     //
     // 'Forms' screen
@@ -141,28 +132,46 @@ app.controller("LineCtrl", function ($scope) {
 
 });
 
-app.controller('login', function ($rootScope, $scope, $route, Azureservice) {
-    
+app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
     if (!Azureservice.isLoggedIn()) {
-        Azureservice.login('google').then(function () {
-            $route.reload();
-        });
-        console.log('from login controller');
-    } else {
-        console.log('User already logged in from login controller');
+        $scope.loginfb = function () {
+                Azureservice.login('facebook').then(function () {
+                    $route.reload();
+                    console.log('from login controller');
+            })
+            // User agent displayed in home page
+            $scope.userAgent = navigator.userAgent;
+
+            // Needed for the loading screen
+            $rootScope.$on('$routeChangeStart', function () {
+                $rootScope.loading = true;
+            });
+
+            $rootScope.$on('$routeChangeSuccess', function () {
+                $rootScope.loading = false;
+            });
+        }
+
+        $scope.logingo = function () {
+                Azureservice.login('google').then(function () {
+                    $route.reload();
+                    console.log('from login controller');
+            })
+            // User agent displayed in home page
+            $scope.userAgent = navigator.userAgent;
+
+            // Needed for the loading screen
+            $rootScope.$on('$routeChangeStart', function () {
+                $rootScope.loading = true;
+            });
+
+            $rootScope.$on('$routeChangeSuccess', function () {
+                $rootScope.loading = false;
+            });
+        }
+    } // ending if statement
+    else {
+        $location.path('/plantslist');
     }
-    // User agent displayed in home page
-    $scope.userAgent = navigator.userAgent;
-
-
-
-    // Needed for the loading screen
-    $rootScope.$on('$routeChangeStart', function () {
-        $rootScope.loading = true;
-    });
-
-    $rootScope.$on('$routeChangeSuccess', function () {
-        $rootScope.loading = false;
-    });
     
 });
