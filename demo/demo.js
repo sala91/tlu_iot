@@ -30,13 +30,12 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/',            { templateUrl: 'forms.html', reloadOnSearch: false });
-    $routeProvider.when('/home',        { templateUrl: 'home.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant',    { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/badgeslist',  { templateUrl: 'badgeslist.html', controller: 'badgeslist', reloadOnSearch: false });
-    $routeProvider.when('/profile',     { templateUrl: 'profile.html', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
+    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: 'plantDetail.html', reloadOnSearch: false });
-    $routeProvider.when('/plantslist',  {
+    $routeProvider.when('/plantslist', {
         templateUrl: 'plantslist.html',
         controller: 'plantslist',
         reloadOnSearch: false,
@@ -46,20 +45,16 @@ app.config(function ($routeProvider) {
             }
         }
     });
+    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
 
 });
 
-//  Controller 'badgeslist' objektide kuvamiseks
-app.controller('badgeslist', function ($scope, badges) {
-    $scope.badges = badges;
-});
 
-//  Controller 'plantslist' objektide kuvamiseks
+
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
 });
 
-//  Controller 'newplant' objektide lisamiseks
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
@@ -87,6 +82,7 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // for everything
 //
 app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
+    /*
     if (!Azureservice.isLoggedIn()) {
         Azureservice.login('google').then(function () {
             $route.reload();
@@ -94,6 +90,66 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
         console.log('Logged user in');
     } else {
         console.log('Used already logged in');
+    }
+    // User agent displayed in home page
+    $scope.userAgent = navigator.userAgent;
+
+    */
+
+    // Needed for the loading screen
+    $rootScope.$on('$routeChangeStart', function () {
+        $rootScope.loading = true;
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.loading = false;
+    });
+
+ 
+
+
+
+    //
+    // 'Forms' screen
+    //  
+    $scope.rememberMe = true;
+    $scope.email = 'me@example.com';
+
+    $scope.login = function () {
+
+        alert('You submitted the login form');
+    };
+
+
+});
+
+
+
+
+
+//	Graafik
+
+app.controller("LineCtrl", function ($scope) {
+
+    $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+    $scope.series = ['Temp', 'Humidity', 'Sunlight'];
+    $scope.data = [
+      [90, 87, 93, 75, 60, 57, 55],
+      [55, 66, 33, 99, 22, 44, 35],
+      [66, 33, 39, 42, 49, 22, 87],
+    ];
+
+});
+
+app.controller('login', function ($rootScope, $scope, $route, Azureservice) {
+    
+    if (!Azureservice.isLoggedIn()) {
+        Azureservice.login('google').then(function () {
+            $route.reload();
+        });
+        console.log('from login controller');
+    } else {
+        console.log('User already logged in from login controller');
     }
     // User agent displayed in home page
     $scope.userAgent = navigator.userAgent;
@@ -108,29 +164,5 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
     $rootScope.$on('$routeChangeSuccess', function () {
         $rootScope.loading = false;
     });
-
-    //
-    // 'Forms' screen
-    //  
-    $scope.rememberMe = true;
-    $scope.email = 'me@example.com';
-
-    $scope.login = function () {
-
-        alert('You submitted the login form');
-    };
-
-});
-
-//  Graafik
-app.controller("LineCtrl", function ($scope) {
-
-    $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-    $scope.series = ['Temp', 'Humidity', 'Sunlight'];
-    $scope.data = [
-      [90, 87, 93, 75, 60, 57, 55],
-      [55, 66, 33, 99, 22, 44, 35],
-      [66, 33, 39, 42, 49, 22, 87],
-    ];
-
+    
 });
