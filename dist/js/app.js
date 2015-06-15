@@ -4,12 +4,11 @@
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
-  
+  'mobile-angular-ui',
   'angularNumberPicker',
   'chart.js',
   'azure-mobile-service.module',
-  'mobile-angular-ui.gestures',
-  'mobile-angular-ui',
+  'mobile-angular-ui.gestures'
 ]);
 
 app.constant('AzureMobileServiceClient', {
