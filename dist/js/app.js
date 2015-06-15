@@ -3,23 +3,11 @@
 // has dependent on mobile-angular-ui
 // 
 var app = angular.module('MobileAngularUiExamples', [
-  // Routing, needed since 1.2
   'ngRoute',
-  // Mobile modulues
   'mobile-angular-ui',
-  // Temperature controlling
   'angularNumberPicker',
-  // Charts wrapper
   'chart.js',
-  // Azure wrapper
   'azure-mobile-service.module',
-
-  // touch/drag feature: this is from 'mobile-angular-ui.gestures.js'
-  // it is at a very beginning stage, so please be careful if you like to use
-  // in production. This is intended to provide a flexible, integrated and and 
-  // easy to use alternative to other 3rd party libs like hammer.js, with the
-  // final pourpose to integrate gestures into default ui interactions like 
-  // opening sidebars, turning switches on/off ..
   'mobile-angular-ui.gestures'
 ]);
 
@@ -34,14 +22,14 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: 'templates/forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: 'templates/home.html', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: 'templates/profile.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: 'templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/badgeslist', { templateUrl: 'templates/badgeslist.html', controller: '', reloadOnSearch: false });
-    $routeProvider.when('/plantDetail', { templateUrl: 'templates/plantDetail.html', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
+    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
+    $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
+    $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/plantslist', {
-        templateUrl: 'templates/plantslist.html',
+        templateUrl: '/templates/plantslist.html',
         controller: 'plantslist',
         reloadOnSearch: false,
         resolve: {
@@ -52,7 +40,7 @@ app.config(function ($routeProvider) {
     });
 
     $routeProvider.when('/home', {
-        templateUrl: 'home.html',
+        templateUrl: '/templates/home.html',
         reloadOnSearch: false,
         controller: 'chartCtrl',
         resolve: {
@@ -64,7 +52,7 @@ app.config(function ($routeProvider) {
 
     // Proov taimede informatsiooni kuvamiseks
     $routeProvider.when('/plantinfo', {
-        templateUrl: 'plantinfo.html',
+        templateUrl: '/templates/plantinfo.html',
         controller: 'plantinfo',
         reloadOnSearch: false,
         resolve: {
