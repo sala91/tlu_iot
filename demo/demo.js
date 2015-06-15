@@ -3,11 +3,16 @@
 // has dependent on mobile-angular-ui
 // 
 var app = angular.module('MobileAngularUiExamples', [
+  // Routing, needed since 1.2
   'ngRoute',
+  // Mobile modulues
   'mobile-angular-ui',
+  // Temperature controlling
   'angularNumberPicker',
+  // Charts wrapper
   'chart.js',
-
+  // Azure wrapper
+  'azure-mobile-service.module',
 
   // touch/drag feature: this is from 'mobile-angular-ui.gestures.js'
   // it is at a very beginning stage, so please be careful if you like to use
@@ -15,8 +20,7 @@ var app = angular.module('MobileAngularUiExamples', [
   // easy to use alternative to other 3rd party libs like hammer.js, with the
   // final pourpose to integrate gestures into default ui interactions like 
   // opening sidebars, turning switches on/off ..
-  'mobile-angular-ui.gestures',
-  'azure-mobile-service.module'
+  'mobile-angular-ui.gestures'
 ]);
 
 app.constant('AzureMobileServiceClient', {
@@ -48,8 +52,6 @@ app.config(function ($routeProvider) {
     $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', reloadOnSearch: false });
 
 });
-
-
 
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
@@ -108,16 +110,10 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
 
         alert('You submitted the login form');
     };
-
-
 });
 
 
-
-
-
 //	Graafik
-
 app.controller("LineCtrl", function ($scope) {
 
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
