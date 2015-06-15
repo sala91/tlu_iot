@@ -105,20 +105,6 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
     });
 
  
-    // 
-    // 'Scroll' screen
-    // 
-    var scrollItems = [];
-
-    for (var i = 1; i <= 100; i++) {
-        scrollItems.push('Item ' + i);
-    }
-
-    $scope.scrollItems = scrollItems;
-
-    $scope.bottomReached = function () {
-        alert('Congrats you scrolled to the end of the list!');
-    }
 
 
 
