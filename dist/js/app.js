@@ -34,14 +34,14 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/badgeslist', { templateUrl: 'badgeslist.html', controller: '', reloadOnSearch: false });
-    $routeProvider.when('/plantDetail', { templateUrl: 'plantDetail.html', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: 'templates/forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: 'templates/home.html', reloadOnSearch: false });
+    $routeProvider.when('/profile', { templateUrl: 'templates/profile.html', reloadOnSearch: false });
+    $routeProvider.when('/newplant', { templateUrl: 'templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/badgeslist', { templateUrl: 'templates/badgeslist.html', controller: '', reloadOnSearch: false });
+    $routeProvider.when('/plantDetail', { templateUrl: 'templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/plantslist', {
-        templateUrl: 'plantslist.html',
+        templateUrl: 'templates/plantslist.html',
         controller: 'plantslist',
         reloadOnSearch: false,
         resolve: {
