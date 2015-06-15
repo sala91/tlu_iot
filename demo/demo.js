@@ -30,7 +30,7 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: 'forms.html', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: 'forms.html',controller:'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: 'home.html', reloadOnSearch: false });
     $routeProvider.when('/newplant', { templateUrl: 'newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/profile', { templateUrl: 'profile.html', reloadOnSearch: false });
@@ -82,6 +82,7 @@ app.controller('newplant', function ($scope, $rootScope, $location, Azureservice
 // for everything
 //
 app.controller('MainController', function ($rootScope, $scope, $route, Azureservice) {
+    /*
     if (!Azureservice.isLoggedIn()) {
         Azureservice.login('google').then(function () {
             $route.reload();
@@ -93,7 +94,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, Azureserv
     // User agent displayed in home page
     $scope.userAgent = navigator.userAgent;
 
-
+    */
 
     // Needed for the loading screen
     $rootScope.$on('$routeChangeStart', function () {
@@ -138,4 +139,30 @@ app.controller("LineCtrl", function ($scope) {
       [66, 33, 39, 42, 49, 22, 87],
     ];
 
+});
+
+app.controller('login', function ($rootScope, $scope, $route, Azureservice) {
+    
+    if (!Azureservice.isLoggedIn()) {
+        Azureservice.login('google').then(function () {
+            $route.reload();
+        });
+        console.log('from login controller');
+    } else {
+        console.log('User already logged in from login controller');
+    }
+    // User agent displayed in home page
+    $scope.userAgent = navigator.userAgent;
+
+
+
+    // Needed for the loading screen
+    $rootScope.$on('$routeChangeStart', function () {
+        $rootScope.loading = true;
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function () {
+        $rootScope.loading = false;
+    });
+    
 });
