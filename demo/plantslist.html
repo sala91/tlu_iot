@@ -1,0 +1,19 @@
+<!-- XAMPP -->
+
+<div class="scrollable">
+
+	<div class="btn-group justified">
+		<a id="addPlant" class="btn btn-default active" href="#newplant">
+			<i class="fa fa-3x fa-plus-square"></i>
+		</a>
+	</div>
+
+	<div class="scrollable-content">
+		<div class="list-group">
+			<a ng-repeat="item in plants" href="" class="list-group-item">
+			{{ item.name }}, {{item.raspberry_id}} <i class="fa fa-chevron-right pull-right"></i>
+			</a>
+		</div>
+	</div>
+
+</div>

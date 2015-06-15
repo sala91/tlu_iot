@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"/>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<link rel="stylesheet" href="dist/angular-chart.css">
+<script>
+	var app = angular.module('myModule', ['chart.js']);
+</script>
+<style>#statid{position:relative;max-width:401px; height:250px; margin:0 auto; left:0; right:0; top:30px;}.chart-sz{max-width:400px; min-width:250px;}</style>
+</head>
+<body ng-app="app" ng-controller="LineCtrl">
+	
+	<div id="statid">
+		<div class="chart-sz">
+			<canvas id="line" class="chart chart-line ng-isolate-scope" 
+			data="data" labels="labels" legend="false" click="onClick" 
+			hover="onHover" series="series" height="261" width="523"></canvas>
+		</div>
+	</div>
+	
+	<script>
+		angular.module("app", ["chart.js"]).controller("LineCtrl", function ($scope) {
+
+			$scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+			/*
+				Graafiku legend
+				$scope.series = ['Pinnase niiskustase',];
+			*/
+			$scope.data = [
+				[132, 125, 100, 80, 74, 70, 65],
+			];			
+			
+			/*
+			$scope.onClick = function (points, evt) {
+			console.log(points, evt);
+			};
+			*/
+		});
+	</script>
+
+<script src="Chart.js/Chart.min.js"></script>
+<script src="dist/angular-chart.js"></script>
+</body>
+</html>
