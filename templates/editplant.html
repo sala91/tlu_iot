@@ -1,7 +1,7 @@
 ﻿<div class="scrollable">
     <div class="scrollable-content section">
 
-        <div class="form-group has-success has-feedback" ng-repeat="item in selected">
+        <div class="form-group has-success has-feedback">
             <label>Plant name <font color="navyblue">({{ selected.name }})</font></label>
             <input type="text"
                    ng-model="newFormModel.name"
@@ -38,7 +38,7 @@
 
         <div class="form-group has-success has-feedback">
             <div>
-                <label>Max temp <font color="navyblue">{{ selected.max_temp }}°C)</font></label>
+                <label>Max temp <font color="navyblue">({{ selected.max_temp }}°C)</font></label>
                 <div>
                     <h-number value="newFormModel.max_temp" singular="celcius" plural="°C" min="6" max="50" step="1"></h-number>
                 </div>

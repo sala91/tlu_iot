@@ -1,4 +1,10 @@
-<div class="scrollable">
+<!--
+<div ui-content-for="title">
+  <span>Add plant</span>
+</div>
+-->
+
+<div class="scrollable" ui-state="searchBar">
     <div class="scrollable-content section">
         <div>
             <input type="file" ng-file-select="onFileSelect($files)" multiple>
@@ -33,7 +39,7 @@
 
         <div class="form-group has-success has-feedback">
             <div>
-                <label>Min temp {{ formModel.min_number }} Celcius</label>
+                <label>Min temp {{formModel.min_number}} Celcius</label>
                 <div>
                     <h-number value="formModel.min_number" singular="celcius" plural="celcius" min="5" max="40" step="1"></h-number>
 
@@ -43,7 +49,7 @@
         </div>
         <div class="form-group has-success has-feedback">
             <div>
-                <label>Max temp {{ formModel.max_temp }} Celcius</label>
+                <label>Max temp {{formModel.max_temp}} Celcius</label>
                 <div>
                     <h-number value="formModel.max_temp" singular="celcius" plural="celcius" min="6" max="50" step="1"></h-number>
 
