@@ -24,8 +24,16 @@ app.constant('AzureMobileServiceClient', {
 // 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false, });
+    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html',
+        reloadOnSearch: false,
+        controller: 'getuser',
+        resolve: {
+            'user': function (Azureservice) {
+                return Azureservice.getAll('users');
+            }
+        }
+    });
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
@@ -111,7 +119,6 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
     // tuleb lisada kontroll kas nt user.name on olemas ja kui ei ole siis edasi saata
     try {
         if (user[0].name !== undefined) {
-            console.log("Trying");
             $location.path('/profile');
             $rootScope.loading = false;
         } 
@@ -120,7 +127,6 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
     }
     catch (e) {
         // statements to handle any exceptions
-        console.log("did not work")
         var userModel = {
             email: 'email',
             name: 'name',
@@ -136,12 +142,16 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
             });
         }
     }
-    
-    
-    
-   
+});
+// get user not working yet
+app.controller('getuser', function ($scope, user) {
+    console.log(user[0].name);
+    var userModel = {
+        email: 'email',
+        name: 'name',
+        phone: 'number',
 
-
+    };
 });
 
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
