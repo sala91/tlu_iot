@@ -73,13 +73,14 @@ app.config(function ($routeProvider) {
         }
     });
 
-    // Proov taimede informatsiooni kuvamiseks
-    $routeProvider.when('/plantinfo', {
-        templateUrl: '/templates/plantinfo.html',
-        controller: 'plantinfo',
+    $routeProvider.when('/editplant', {
+        templateUrl: '/templates/editplant.html',
+        controller: 'editPlant',
         reloadOnSearch: false,
         resolve: {
-            'plants': function (Azureservice) {
+            // Peaks saama vastava ID'ga sissekande
+            'selected': function (Azureservice) {
+                //return Azureservice.getById('plant', 'EC39D65F-8916-4B47-8724-7ECCDFB9B521');
                 return Azureservice.getAll('plant');
             }
         }
@@ -109,6 +110,33 @@ app.controller('plantslist', function ($scope, plants) {
     //  Plantslisti valiku ID
     $scope.buttonId = function (btnId) {
         button_id = btnId;
+    };
+});
+
+app.controller('editPlant', function ($scope, $rootscope, $location, selected, Azureservice) {
+    /* ----- editplant.html ----- */
+    $scope.selected = selected;
+ 
+    var newFormModel = {
+        id: 'EC39D65F-8916-4B47-8724-7ECCDFB9B521',
+        name: selected.name,
+        raspberry_id: selected.raspberry_id,
+        humidity: selected.humidity,
+        min_number: selected.min_number,
+        max_temp: selected.max_number,
+        'private': selected.private,
+        about: selected.about
+    };
+ 
+    $scope.newFormModel = newFormModel;
+ 
+    $scope.editForm = function () {
+        $rootScope.loading = true;
+        Azureservice.update('plant', $scope.newFormModel).then(function () {
+            // Suunab tagasi "/plantslist"
+            $location.path('/plantslist');
+            $rootScope.loading = false;
+        });
     };
 });
 
