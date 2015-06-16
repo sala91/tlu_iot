@@ -30,7 +30,16 @@ app.config(function ($routeProvider) {
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
-    $routeProvider.when('/newuser', { templateUrl: 'templates/newuser.html', controller: 'newuser', reloadOnSearch: false });
+    $routeProvider.when('/newuser', {
+        templateUrl: 'templates/newuser.html',
+        controller: 'newuser',
+        reloadOnSearch: false,
+        resolve: {
+            'user': function (Azureservice) {
+                return Azureservice.getAll('users');
+            }
+        }
+    });
     $routeProvider.when('/plantslist', {
         templateUrl: '/templates/plantslist.html',
         controller: 'plantslist',
@@ -102,24 +111,45 @@ app.controller('plantslist', function ($scope, plants) {
         button_id = btnId;
     };
 });
-app.controller('newuser', function ($scope, $rootScope, $location, Azureservice) {
-    var userModel = {
-        email: 'example@email.com',
-        name: 'My name',
-        phone: '',
 
-    };
-    $scope.userModel = userModel;
-    $scope.sendUser = function () {
-        $rootScope.loading = true;
-        Azureservice.insert('users', $scope.userModel).then(function () {
+// controller uue kasutaja info lisamiseks
+app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
+    // tuleb lisada kontroll kas nt user.name on olemas ja kui ei ole siis edasi saata
+    try {
+        if (user[0].name !== undefined) {
+            console.log("Trying");
             $location.path('/profile');
             $rootScope.loading = false;
-        });
-    };
+        } 
+        throw "TypeError"; // generates an exception
+             
+    }
+    catch (e) {
+        // statements to handle any exceptions
+        console.log("did not work")
+        var userModel = {
+            email: 'email',
+            name: 'name',
+            phone: 'number',
+
+        };
+        $scope.userModel = userModel;
+        $scope.sendUser = function () {
+            $rootScope.loading = true;
+            Azureservice.insert('users', $scope.userModel).then(function () {
+                $location.path('/profile');
+                $rootScope.loading = false;
+            });
+        }
+    }
+    
+    
+    
+   
 
 
 });
+
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
@@ -162,9 +192,9 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         Azureservice.logout();
         $location.path('/');
     }
-
+    /*
     //
-    // 'Forms' screen
+    // 'Forms' screen  VIST EI KASUTA ENAM AGA POLE 100% KINDEL VEEL
     //  
     $scope.rememberMe = true;
     $scope.email = 'me@example.com';
@@ -173,6 +203,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
 
         alert('You submitted the login form');
     };
+    */
 });
 
 
@@ -195,6 +226,7 @@ app.controller('chartCtrl', function ($scope, plantCount) {
 
 // Login controller
 app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
+    console.log("Login controller");
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
                 Azureservice.login('facebook').then(function () {
@@ -210,6 +242,7 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
             })
         }
     } else {
-        $location.path('/plantslist');
-    }
+        $location.path('/newuser');
+        }
+     
 });
