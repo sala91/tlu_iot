@@ -1,3 +1,4 @@
+var button_id;
 // 
 // Here is how to define your module 
 // has dependent on mobile-angular-ui
@@ -58,7 +59,7 @@ app.config(function ($routeProvider) {
         controller: 'pdetail',
         resolve: {
             'plantdetail': function (Azureservice) {
-                return Azureservice.getById('plant', '0F55FE1F-B5FC-449A-AAF1-74FF4F1E4449');
+                return Azureservice.getById('plant', button_id);
             }
         }
     });
@@ -86,6 +87,7 @@ app.controller('pdetail', function ($scope, plantdetail) {
     $scope.data = [
         [10, 14, 8, 10, 17, 21, 16],
     ];
+
 });
 
 // Mingi controller 'plantinfo' proovimiseks
@@ -95,6 +97,10 @@ app.controller('plantinfo', function ($scope, plants) {
 
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
+    //  Plantslisti valiku ID
+    $scope.buttonId = function (btnId) {
+        button_id = btnId;
+    };
 });
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice) {
     var userModel = {
