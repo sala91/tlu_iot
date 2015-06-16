@@ -40,6 +40,7 @@ app.config(function ($routeProvider) {
             }
         }
     });
+
     $routeProvider.when('/plantslist', {
         templateUrl: '/templates/plantslist.html',
         controller: 'plantslist',

@@ -13,6 +13,12 @@ h3.plant-name {
     position:relative;
 }
 
+#notes-position {
+    position:relative;
+    float:left;
+    width:50%;
+}
+
 #btn-plantdetail {
     top:5px;
     position:relative;

@@ -13,12 +13,18 @@
 
             <h4 style="position:relative; top:-10px;"><b>About</b></h4>
             {{plantdetail.about}}<br /><br />
-            <a id="btn-plantdetail" class="btn btn-default" href="">
-                <i class="fa fa-2x fa-cloud"></i>
-            </a>
-            <a id="btn-plantdetail" class="btn btn-default" href="">
-                <i class="fa fa-2x fa-lightbulb-o"></i>
-            </a>
+            
+                <!--Kastmise ja valgustuse nupud.-->    
+
+                <a id="btn-plantdetail" class="btn btn-default" href="">
+                    <i class="fa fa-2x fa-cloud"></i>
+                </a>
+                <a id="btn-plantdetail" class="btn btn-default" href="">
+                    <i class="fa fa-2x fa-lightbulb-o"></i>
+                </a>
+
+            <!--Graafikud.-->
+
             <hr />
             <br />
             <b>Temperature</b>
@@ -33,7 +39,14 @@
             <canvas id="line" class="chart chart-line" data="data"
                     labels="labels" legend="false" series="series"
                     click="onClick"></canvas><hr />
-            <h4><b>Notes</b></h4>
+            <h4><b>Notes</b>
+            <a>
+                <i class="fa fa-plus" style="float:right; right:2px;"></i>
+            </a>
+            </h4>
+            
+            <!--Siia tulevad märkmed.-->
+
         </div>
     </div>
 </div>
