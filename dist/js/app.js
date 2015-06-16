@@ -1,4 +1,5 @@
-var button_id;
+var button_id = null;
+
 // 
 // Here is how to define your module 
 // has dependent on mobile-angular-ui
@@ -246,7 +247,9 @@ app.controller("LineCtrl", function ($scope) {
         [5, 5, 5, 5, 5, 10, 5],
         [10, 10, 2, 10, 10, 0, 10]
     ];
-
+    $scope.buttonId = function (btnId) {
+        button_id = btnId;
+    };
 });
 
 app.controller('chartCtrl', function ($scope, plantCount) {
