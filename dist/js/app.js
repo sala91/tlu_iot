@@ -90,7 +90,7 @@ app.config(function ($routeProvider) {
 
 });
 
-app.controller('pdetail', function ($scope, plantdetail) {
+app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
 
     //  Graafikud
@@ -103,6 +103,14 @@ app.controller('pdetail', function ($scope, plantdetail) {
     $scope.buttonId = function (btnId) {
         button_id = btnId;
         //console.log(button_id);
+    };
+
+    $scope.deletePlant = function () {
+        $rootScope.loading = true;
+        Azureservice.del('plant', { id: button_id }).then(function () {
+            $location.path('/plantslist');
+            $rootScope.loading = false;
+        });
     };
 });
 
@@ -117,7 +125,6 @@ app.controller('plantslist', function ($scope, plants) {
 });
 
 app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
-    /* ----- editplant.html ----- */
     $scope.selected = selected;
  
     var newFormModel = {
@@ -130,13 +137,12 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
         'private': selected.private,
         about: selected.about
     };
- 
+
     $scope.newFormModel = newFormModel;
  
     $scope.editForm = function () {
         $rootScope.loading = true;
         Azureservice.update('plant', $scope.newFormModel).then(function () {
-            // Suunab tagasi "/plantslist"
             $location.path('/plantDetail');
             $rootScope.loading = false;
         });
