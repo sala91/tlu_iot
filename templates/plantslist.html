@@ -8,8 +8,8 @@
 
 	<div class="scrollable-content">
 		<div class="list-group">
-			<a ng-repeat="item in plants" href="" class="list-group-item">
-			{{ item.name }}, {{item.raspberry_id}} <i class="fa fa-chevron-right pull-right"></i>
+			<a id="{{ item.id }}" ng-repeat="item in plants" href="#editplant" class="list-group-item">
+			<b>{{ item.name }}</b>, <font color="navyblue">{{item.raspberry_id}}</font> <i class="fa fa-chevron-right pull-right"></i>
 			</a>
 		</div>
 	</div>
