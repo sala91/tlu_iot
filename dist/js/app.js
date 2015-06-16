@@ -26,20 +26,9 @@ app.config(function ($routeProvider) {
     $routeProvider.when('/',    { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
     $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
-    $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
+    $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'plantController', reloadOnSearch: false });
     $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
-    $routeProvider.when('/plantslist', {
-        templateUrl: '/templates/plantslist.html',
-        controller: 'plantslist',
-        reloadOnSearch: false,
-        resolve: {
-            'plants': function (Azureservice) {
-                return Azureservice.getAll('plant');
-            }
-        }
-    });
-
     $routeProvider.when('/home', {
         templateUrl: '/templates/home.html',
         reloadOnSearch: false,
@@ -51,9 +40,20 @@ app.config(function ($routeProvider) {
         }
     });
 
+    $routeProvider.when('/plantslist', {
+        templateUrl: '/templates/plantslist.html',
+        controller: 'plantslist',
+        reloadOnSearch: false,
+        resolve: {
+            'plants': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            }
+        }
+    });
+
     $routeProvider.when('/editplant', {
         templateUrl: '/templates/editplant.html',
-        controller: 'editplant',
+        controller: 'plantController',
         reloadOnSearch: false,
         resolve: {
             // Peaks saama vastava ID'ga sissekande
@@ -66,7 +66,29 @@ app.config(function ($routeProvider) {
 
 });
 
-app.controller('editplant', function ($scope, $rootScope, $location, Azureservice, selected) {
+app.controller('plantController', function ($scope, $rootScope, $location, Azureservice, selected) {
+    /* ----- newplant.html ----- */
+    var formModel = {
+        name: 'test',
+        raspberry_id: 'pID1',
+        humidity: '',
+        min_number: 5,
+        max_temp: 10,
+        'private': '',
+        about: 'Test string'
+    };
+
+    $scope.formModel = formModel;
+
+    $scope.sendForm = function () {
+        $rootScope.loading = true;
+        Azureservice.insert('plant', $scope.formModel).then(function () {
+            $location.path('/plantslist');
+            $rootScope.loading = false;
+        });
+    };
+
+    /* ----- editplant.html ----- */
     $scope.selected = selected;
 
     var newFormModel = {
@@ -79,8 +101,6 @@ app.controller('editplant', function ($scope, $rootScope, $location, Azureservic
         'private': selected.private,
         about: selected.about
     };
-
-    var object = document.getElementById('');
 
     $scope.newFormModel = newFormModel;
 
@@ -96,9 +116,14 @@ app.controller('editplant', function ($scope, $rootScope, $location, Azureservic
 
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
+
+    $scope.getId = function (id) {
+        //var object = document.getElementById(id);
+        console.log(id);
+    }
 });
 
-    app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
+    /*app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
         var formModel = {
             name: 'test',
             raspberry_id: 'pID1',
@@ -118,7 +143,7 @@ app.controller('plantslist', function ($scope, plants) {
                 $rootScope.loading = false;
             });
         };
-    });
+    });*/
 
     //
     // For this trivial demo we have just a unique MainController 

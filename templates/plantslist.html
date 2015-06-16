@@ -8,10 +8,12 @@
 
 	<div class="scrollable-content">
 		<div class="list-group">
-			<a id="{{ item.id }}" ng-repeat="item in plants" href="#editplant" class="list-group-item">
-			<b>{{ item.name }}</b>, <font color="navyblue">{{item.raspberry_id}}</font> <i class="fa fa-chevron-right pull-right"></i>
+			<a id="{{ item.id }}" ng-repeat="item in plants" ng-click="getId( item.id );" href="#editplant" class="list-group-item">
+			    <b>{{ item.name }}</b>, <font color="navyblue">{{ item.raspberry_id }}</font> <i class="fa fa-chevron-right pull-right"></i>
 			</a>
 		</div>
 	</div>
 
 </div>
+
+<!-- Päev möödus kiiresti, jamasin lehe osaga, mis peaks võimaldama lisatud andmete muutmist. Praeguseks veel asja päris tööle ei saanud, kuid mõne asja muutmise ja lisamisega peaks asi töökorda saama. See "edit" nupp peaks lõpuks asuma taime info lehel. -->

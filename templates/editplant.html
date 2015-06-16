@@ -2,7 +2,7 @@
     <div class="scrollable-content section">
 
         <div class="form-group has-success has-feedback" ng-repeat="item in selected">
-            <label>Plant name <font color="navyblue">(Currently: {{ selected.name }})</font></label>
+            <label>Plant name <font color="navyblue">({{ selected.name }})</font></label>
             <input type="text"
                    ng-model="newFormModel.name"
                    class="form-control"
@@ -10,7 +10,7 @@
         </div>
 
         <div class="form-group has-success has-feedback">
-            <label>Rasp ID <font color="navyblue">(Currently: {{ selected.raspberry_id }})</font></label>
+            <label>Rasp ID <font color="navyblue">({{ selected.raspberry_id }})</font></label>
             <input type="text"
                    ng-model="newFormModel.raspberry_id"
                    class="form-control"
@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-group has-success has-feedback">
-            <label>Humidity: <font color="navyblue">(Currently: {{ selected.humidity }})</font></label>
+            <label>Humidity: <font color="navyblue">({{ selected.humidity }})</font></label>
             <select ng-model="newFormModel.humidity" convert-to-number>
                 <option value="Dry soil">Dry soil</option>
                 <option value="Humid soil">Humid soil</option>
@@ -29,7 +29,7 @@
 
         <div class="form-group has-success has-feedback">
             <div>
-                <label>Min temp <font color="navyblue">(Currently: {{ selected.min_number }}°C)</font></label>
+                <label>Min temp <font color="navyblue">({{ selected.min_number }}°C)</font></label>
                 <div>
                     <h-number value="newFormModel.min_number" singular="celcius" plural="°C" min="5" max="40" step="1"></h-number>
                 </div>
@@ -38,7 +38,7 @@
 
         <div class="form-group has-success has-feedback">
             <div>
-                <label>Max temp <font color="navyblue">Currently: {{ selected.max_temp }}°C)</font></label>
+                <label>Max temp <font color="navyblue">{{ selected.max_temp }}°C)</font></label>
                 <div>
                     <h-number value="newFormModel.max_temp" singular="celcius" plural="°C" min="6" max="50" step="1"></h-number>
                 </div>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group has-success has-feedback">
-            <label>Privacy <font color="navyblue">(Currently: {{ selected.privacy }})</font></label>
+            <label>Privacy <font color="navyblue">({{ selected.privacy }})</font></label>
             <select ng-model="model.id1" convert-to-number>
                 <option value="true">Private</option>
                 <option value="false">Public</option>
@@ -59,13 +59,14 @@
             <textarea type="textarea" rows="10"
                       ng-model="newFormModel.about"
                       class="form-control"
-                      placeholder="About (Currently: {{ selected.about }})"></textarea>
-
+                      placeholder="About ({{ selected.about }})"></textarea>
         </div>
+
         <div class="btn-group justified" ng-click="editForm();" />
         <a id="addPlant" class="btn btn-default">
             Edit
         </a>
+
     </div>
 </div>
 
