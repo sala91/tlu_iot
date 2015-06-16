@@ -1,19 +1,37 @@
 <div ui-content-for="title">
-  <span>Plant detail</span>
+    <span>Plant detail</span>
 </div>
 
 <div class="scrollable">
-<div class="scrollable-content">
-  
+    <div class="scrollable-content">
 
-    <h5>Plant detail</h5>
+        <div id="plant-info">
+            <i class="fa fa-5x fa-user feature-icon text-primary pull-left"></i>
+            <h3 class="plant-name"><b>{{plantdetail.name}}</b></h3>
 
-    <div class="btn-group">
-      <a href class="btn btn-default" ui-turn-on='button1' ui-state='button1' ui-class="{'active': button1}" ui-exclusion-group='myButtons'>plant 1</a>
-      <a href class="btn btn-default" ui-turn-on='button2' ui-state='button2' ui-class="{'active': button2}" ui-exclusion-group='myButtons'>plant 2</a>
-      <a href class="btn btn-default" ui-turn-on='button3' ui-state='button3' ui-class="{'active': button3}" ui-exclusion-group='myButtons'>plant 3</a>
+            <h4><b>About</b></h4>
+            <span>{{plantdetail.about}}</span><br /><br />
+            <a id="btn-plantdetail" class="btn btn-default" href="">
+                <i class="fa fa-2x fa-cloud"></i>
+            </a>
+            <a id="btn-plantdetail" class="btn btn-default" href="">
+                <i class="fa fa-2x fa-lightbulb-o"></i>
+            </a>
+            <hr /><br />
+            <h4>Temperature</h4>
+                <canvas id="line" class="chart chart-line" data="data"
+                        labels="labels" legend="false" series="series"
+                        click="onClick"></canvas><hr />
+            <h4>Humidity</h4>
+                    <canvas id="line" class="chart chart-line" data="data"
+                            labels="labels" legend="false" series="series"
+                            click="onClick"></canvas><hr />
+            <h4>Sunlight</h4>
+            <canvas id="line" class="chart chart-line" data="data"
+                    labels="labels" legend="false" series="series"
+                    click="onClick"></canvas><hr />
+            <h4><b>Notes</b></h4>
+        </div>
     </div>
-
-  </div>
 </div>
 
