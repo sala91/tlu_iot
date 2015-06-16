@@ -1,0 +1,33 @@
+﻿<div class="scrollable" ui-state="searchBar">
+    <div class="scrollable-content section">
+        <div class="form-group has-success has-feedback">
+            <label>Profile picture</label>
+            <div>
+                <input type="file" ng-file-select="onFileSelect($files)" multiple>
+            </div>
+            <div>
+                <input type="email"
+                       ng-model="userModel.email"
+                       class="form-control"
+                       placeholder="Enter email">
+
+            </div> 
+            <div>
+                <input type="text"
+                       ng-model="userModel.name"
+                       class="form-control"
+                       placeholder="My name">
+
+            </div> 
+            <div>
+                <input type="text"
+                       ng-model="userModel.phone"
+                       class="form-control"
+                       placeholder="Phone number">
+
+            </div> 
+                  
+        </div>   
+    </div>
+</div>
+

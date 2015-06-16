@@ -29,6 +29,7 @@ app.config(function ($routeProvider) {
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
+    $routeProvider.when('/newuser', { templateUrl: 'templates/newuser.html', controller: 'newuser', reloadOnSearch: false });
     $routeProvider.when('/plantslist', {
         templateUrl: '/templates/plantslist.html',
         controller: 'plantslist',
@@ -73,7 +74,24 @@ app.controller('plantinfo', function ($scope, plants) {
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
 });
+app.controller('newuser', function ($scope, $rootScope, $location, Azureservice) {
+    var userModel = {
+        email: 'example@email.com',
+        name: 'My name',
+        phone: '',
 
+    };
+    $scope.userModel = userModel;
+    $scope.sendUser = function () {
+        $rootScope.loading = true;
+        Azureservice.insert('users', $scope.userModel).then(function () {
+            $location.path('/profile');
+            $rootScope.loading = false;
+        });
+    };
+
+
+});
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
