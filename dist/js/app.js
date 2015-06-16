@@ -136,9 +136,9 @@ app.controller("LineCtrl", function ($scope) {
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
     $scope.series = ['Temp', 'Humidity', 'Sunlight'];
     $scope.data = [
-        [0, 0, 0, 0, 0, 0, 0],
-        [5, 5, 5, 5, 5, 5, 5],
-        [10, 10, 10, 10, 10, 10, 10]
+        [0, 0, 0, 10, 0, 5, 0],
+        [5, 5, 5, 5, 5, 10, 5],
+        [10, 10, 2, 10, 10, 0, 10]
     ];
 
 });
