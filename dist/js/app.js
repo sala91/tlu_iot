@@ -52,6 +52,17 @@ app.config(function ($routeProvider) {
         }
     });
 
+    $routeProvider.when('/plantDetail', {
+        templateUrl: '/templates/plantDetail.html',
+        reloadOnSearch: false,
+        controller: 'pdetail',
+        resolve: {
+            'plantdetail': function (Azureservice) {
+                return Azureservice.getById('plant', '0F55FE1F-B5FC-449A-AAF1-74FF4F1E4449');
+            }
+        }
+    });
+
     // Proov taimede informatsiooni kuvamiseks
     $routeProvider.when('/plantinfo', {
         templateUrl: '/templates/plantinfo.html',
@@ -64,6 +75,17 @@ app.config(function ($routeProvider) {
         }
     });
 
+});
+
+app.controller('pdetail', function ($scope, plantdetail) {
+    $scope.plantdetail = plantdetail;
+
+    //  Graafikud
+    $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+    $scope.series = ['Temp'];
+    $scope.data = [
+        [10, 14, 8, 10, 17, 21, 16],
+    ];
 });
 
 // Mingi controller 'plantinfo' proovimiseks
