@@ -105,13 +105,6 @@ app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice,
         //console.log(button_id);
     };
 
-    $scope.deletePlant = function () {
-        $rootScope.loading = true;
-        Azureservice.del('plant', { id: button_id }).then(function () {
-            $location.path('/plantslist');
-            $rootScope.loading = false;
-        });
-    };
 });
 
 app.controller('plantslist', function ($scope, plants) {
@@ -144,6 +137,13 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
         $rootScope.loading = true;
         Azureservice.update('plant', $scope.newFormModel).then(function () {
             $location.path('/plantDetail');
+            $rootScope.loading = false;
+        });
+    };
+    $scope.deletePlant = function () {
+        $rootScope.loading = true;
+        Azureservice.del('plant', { id: button_id }).then(function () {
+            $location.path('/plantslist');
             $rootScope.loading = false;
         });
     };

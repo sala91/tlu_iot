@@ -62,11 +62,16 @@
                       placeholder="About ({{ selected.about }})"></textarea>
         </div>
 
-        <div class="btn-group justified" ng-click="editForm();" />
-        <a id="addPlant" class="btn btn-default">
-            Edit
-        </a>
-
+        <div class="btn-group justified" ng-click="editForm();">
+            <a id="addPlant" class="btn btn-default">
+                Edit
+            </a>
+        </div>
+        
+        <br />
+        To delete this plant press: 
+        <a ng-click="deletePlant();" style="color:red;"><b>here</b></a>.
+   
     </div>
 </div>
 
