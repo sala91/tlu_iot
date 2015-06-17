@@ -187,15 +187,9 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
         }
     }
 });
-// get user data not working yet
+// get user data 
 app.controller('getuser', function ($scope, user) {
-    console.log(user[0].name);
-    var userModel = {
-        email: 'email',
-        name: 'name',
-        phone: 'number',
-
-    };
+    $scope.user = user[0];
 });
 
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
