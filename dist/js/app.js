@@ -1,3 +1,4 @@
+//  ID
 var button_id = null;
 
 // 
@@ -26,8 +27,16 @@ app.constant('AzureMobileServiceClient', {
 // 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false, });
+    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html',
+        reloadOnSearch: false,
+        controller: 'getuser',
+        resolve: {
+            'user': function (Azureservice) {
+                return Azureservice.getAll('users');
+            }
+        }
+    });
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
@@ -149,21 +158,19 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
     };
 });
 
-// controller uue kasutaja info lisamiseks
+// controller to add data if user log\s in first time
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
-    // tuleb lisada kontroll kas nt user.name on olemas ja kui ei ole siis edasi saata
+   
     try {
         if (user[0].name !== undefined) {
-            console.log("Trying");
             $location.path('/profile');
             $rootScope.loading = false;
         } 
-        throw "TypeError"; // generates an exception
+        throw "TypeError"; //user[0].name gives type error if no data is received from azure
              
     }
     catch (e) {
         // statements to handle any exceptions
-        console.log("did not work")
         var userModel = {
             email: 'email',
             name: 'name',
@@ -179,12 +186,16 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
             });
         }
     }
-    
-    
-    
-   
+});
+// get user data not working yet
+app.controller('getuser', function ($scope, user) {
+    console.log(user[0].name);
+    var userModel = {
+        email: 'email',
+        name: 'name',
+        phone: 'number',
 
-
+    };
 });
 
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
@@ -244,16 +255,17 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
 });
 
 
+var temp_data = [15, 10, 5, 4, 3, 2, 1];
+var humi_data = [13, 8, 7, 6, 5, 4, 3];
+var sunl_data = [11, 6, 4, 3, 2, 2, 0];
+
 //	Graafik
 app.controller("LineCtrl", function ($scope) {
 
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
     $scope.series = ['Temp', 'Humidity', 'Sunlight'];
-    $scope.data = [
-        [0, 0, 0, 10, 0, 5, 0],
-        [5, 5, 5, 5, 5, 10, 5],
-        [10, 10, 2, 10, 10, 0, 10]
-    ];
+    $scope.data = [temp_data, humi_data, sunl_data];
+
     $scope.buttonId = function (btnId) {
         button_id = btnId;
         //console.log(button_id);
