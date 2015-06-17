@@ -114,15 +114,15 @@ app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
 });
 
-// controller uue kasutaja info lisamiseks
+// controller to add data if user log\s in first time
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
-    // tuleb lisada kontroll kas nt user.name on olemas ja kui ei ole siis edasi saata
+   
     try {
         if (user[0].name !== undefined) {
             $location.path('/profile');
             $rootScope.loading = false;
         } 
-        throw "TypeError"; // generates an exception
+        throw "TypeError"; //user[0].name gives type error if no data is received from azure
              
     }
     catch (e) {
@@ -143,7 +143,7 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
         }
     }
 });
-// get user not working yet
+// get user data not working yet
 app.controller('getuser', function ($scope, user) {
     console.log(user[0].name);
     var userModel = {
