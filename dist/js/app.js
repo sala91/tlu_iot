@@ -165,16 +165,24 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
         console.log("Trying", (user[0].name !== undefined));
         if (user[0].name !== undefined) {
             $rootScope.loading = false;
-            newLastLogin();
-            function newLastLogin() {
-                $rootScope.loading = true;
-                lastlogindate = {
-                    lastlogin: new Date().toString(),
-                };
-                console.log(lastlogindate.lastlogin.toString());
+            LoginTimeSwich();
+            function LoginTimeSwich() {
+                console.log("Login time switch", user[0].thislogin);
                 Azureservice.update('users', {
                     id:user[0].id,
-                    lastlogin: lastlogindate.lastlogin
+                    lastlogin: user[0].thislogin,
+                })          
+            };
+            newThisLogin();
+            function newThisLogin() {
+                console.log("new login time");
+                $rootScope.loading = true;
+                thislogindate = {
+                    thislogin: new Date().toString(),
+                };
+                Azureservice.update('users', {
+                    id:user[0].id,
+                    thislogin: thislogindate.thislogin
                     })
                     .then(function () {
                     $location.path('/profile');
@@ -191,7 +199,7 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
             email: '',
             name: '',
             phone: '',
-            lastlogin: new Date().toString(),
+            thislogin: new Date().toString(),
 
         };
         $scope.userModel = userModel;
