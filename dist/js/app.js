@@ -1,3 +1,4 @@
+//  ID
 var button_id = null;
 
 // 
@@ -244,16 +245,17 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
 });
 
 
+var temp_data = [15, 10, 5, 4, 3, 2, 1];
+var humi_data = [13, 8, 7, 6, 5, 4, 3];
+var sunl_data = [11, 6, 4, 3, 2, 2, 0];
+
 //	Graafik
 app.controller("LineCtrl", function ($scope) {
 
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
     $scope.series = ['Temp', 'Humidity', 'Sunlight'];
-    $scope.data = [
-        [0, 0, 0, 10, 0, 5, 0],
-        [5, 5, 5, 5, 5, 10, 5],
-        [10, 10, 2, 10, 10, 0, 10]
-    ];
+    $scope.data = [temp_data, humi_data, sunl_data];
+
     $scope.buttonId = function (btnId) {
         button_id = btnId;
         //console.log(button_id);
