@@ -27,18 +27,9 @@ app.constant('AzureMobileServiceClient', {
 // 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false, });
-    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html',
-        reloadOnSearch: false,
-        controller: 'getuser',
-        resolve: {
-            'user': function (Azureservice) {
-                return Azureservice.getAll('users');
-            }
-        }
-    });
+    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
+    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
-    $routeProvider.when('/badgeslist', { templateUrl: '/templates/badgeslist.html', controller: '', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/newuser', {
         templateUrl: 'templates/newuser.html',
@@ -58,6 +49,20 @@ app.config(function ($routeProvider) {
         resolve: {
             'plants': function (Azureservice) {
                 return Azureservice.getAll('plant');
+            },
+            'badges': function (Azureservice) {
+                return Azureservice.getAll('badges');
+            }
+        }
+    });
+
+    $routeProvider.when('/badgeslist', {
+        templateUrl: '/templates/badgeslist.html',
+        controller: 'badgeController',
+        reloadOnSearch: false,
+        resolve: {
+            'badges': function (Azureservice) {
+                return Azureservice.getAll('badges');
             }
         }
     });
@@ -116,14 +121,48 @@ app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice,
 
 });
 
-app.controller('plantslist', function ($scope, plants) {
+app.controller('badgeController', function ($scope, badges) {
+    $scope.badges = badges;
+});
+
+app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
     $scope.plants = plants;
-    //  Plantslisti valiku ID
+    $scope.badges = badges;
+
     $scope.buttonId = function (btnId) {
         button_id = btnId;
-        // Gets the correct ID of the button from here
-        //console.log(button_id);
     };
+
+    /* Achievement 'Your very first plant' */
+    if (plants.length >= 1) {
+        var exists = 0;
+        for (var i = 0; i < badges.length; i++) {
+            if (!badges[i].name.indexOf('Your very first plant')) {
+                exists = 1;
+            }
+        }
+        if (exists == 0) {
+            Azureservice.insert('badges', { name: 'Your very first plant' }).then(function () { });
+        }
+    }
+
+    /* Achievement 'PLANT PIMP' */
+    if (plants.length == 5) {
+        var exists = 0;
+        for (var i = 0; i < badges.length; i++) {
+            //console.log(badges[i].name);
+            if (!badges[i].name.indexOf('PLANT PIMP')) {
+                console.log('You already own the badge!');
+                exists = 1;
+                console.log("Exists: " + exists);
+            }
+        }
+        if (exists == 0) {
+            Azureservice.insert('badges', { name: 'PLANT PIMP' }).then(function () {
+                console.log('PLANT PIMP ACHIEVED');
+            });
+        }
+    }
 });
 
 app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
@@ -160,16 +199,16 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
 
 // controller to add data if user log\s in first time
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
-    
+
     try {
         if (user[0].name !== undefined) {
             $rootScope.loading = false;
             LoginTimeSwich();
             function LoginTimeSwich() {
                 Azureservice.update('users', {
-                    id:user[0].id,
+                    id: user[0].id,
                     lastlogin: user[0].thislogin,
-                })          
+                })
             };
             newThisLogin();
             function newThisLogin() {
@@ -178,18 +217,18 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
                     thislogin: new Date().toString(),
                 };
                 Azureservice.update('users', {
-                    id:user[0].id,
+                    id: user[0].id,
                     thislogin: thislogindate.thislogin
-                    })
+                })
                     .then(function () {
-                    $location.path('/profile');
-                    $rootScope.loading = false;
-                });
+                        $location.path('/profile');
+                        $rootScope.loading = false;
+                    });
             }
-        } 
+        }
         throw "TypeError"; //user[0].name gives type error if no data is received from azure
-             
-    }catch (e) {
+
+    } catch (e) {
         // statements to handle any exceptions
         console.log("catch:", e);
         var userModel = {
@@ -209,11 +248,6 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
         }
     }
 });
-// get user data 
-app.controller('getuser', function ($scope, user) {
-    $scope.user = user[0];
-});
-
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
@@ -296,18 +330,18 @@ app.controller('chartCtrl', function ($scope, plantCount) {
 app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
-                Azureservice.login('facebook').then(function () {
-                    $route.reload();
+            Azureservice.login('facebook').then(function () {
+                $route.reload();
             })
         }
 
         $scope.logingo = function () {
-                Azureservice.login('google').then(function () {
-                    $route.reload();
+            Azureservice.login('google').then(function () {
+                $route.reload();
             })
         }
     } else {
         $location.path('/newuser');
-        }
+    }
      
 });
