@@ -113,8 +113,8 @@ app.config(function ($routeProvider) {
 
 });
 app.controller('getuser', function ($scope, user) {
-    console.log(user);
     $scope.user = user;
+    //console.log(user);
 });
 app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
@@ -145,11 +145,13 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
         button_id = btnId;
     };
 
+    var userId = plants[0].userId;
+
     /* Achievement 'Your very first plant' */
     if (plants.length >= 1) {
         var exists = 0;
         for (var i = 0; i < badges.length; i++) {
-            if (!badges[i].name.indexOf('Your very first plant')) {
+            if (!badges[i].name.indexOf('Your very first plant') && badges[i].userId == userId) {
                 exists = 1;
             }
         }
@@ -163,7 +165,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
         var exists = 0;
         for (var i = 0; i < badges.length; i++) {
             //console.log(badges[i].name);
-            if (!badges[i].name.indexOf('PLANT PIMP')) {
+            if (!badges[i].name.indexOf('PLANT PIMP') && badges[i].userId == userId) {
                 console.log('You already own the badge!');
                 exists = 1;
                 console.log("Exists: " + exists);
