@@ -162,12 +162,10 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
     
     try {
-        console.log("Trying", (user[0].name !== undefined));
         if (user[0].name !== undefined) {
             $rootScope.loading = false;
             LoginTimeSwich();
             function LoginTimeSwich() {
-                console.log("Login time switch", user[0].thislogin);
                 Azureservice.update('users', {
                     id:user[0].id,
                     lastlogin: user[0].thislogin,
@@ -175,7 +173,6 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
             };
             newThisLogin();
             function newThisLogin() {
-                console.log("new login time");
                 $rootScope.loading = true;
                 thislogindate = {
                     thislogin: new Date().toString(),
