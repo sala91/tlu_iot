@@ -28,7 +28,16 @@ app.constant('AzureMobileServiceClient', {
 app.config(function ($routeProvider) {
     $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
-    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
+    $routeProvider.when('/profile', {
+        templateUrl: '/templates/profile.html',
+        controller: 'getuser',
+        reloadOnSearch: false,
+        resolve: {
+            'user': function (Azureservice) {
+                return Azureservice.getAll('users');
+            }
+        }
+    });
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/newuser', {
@@ -103,7 +112,10 @@ app.config(function ($routeProvider) {
     });
 
 });
-
+app.controller('getuser', function ($scope, user) {
+    console.log(user);
+    $scope.user = user;
+});
 app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
 
@@ -202,9 +214,12 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
 
     try {
         if (user[0].name !== undefined) {
+            console.log("trying", (user[0].name !== undefined));
+            console.log(user[0].name);
             $rootScope.loading = false;
             LoginTimeSwich();
             function LoginTimeSwich() {
+                console.log("login time swich");
                 Azureservice.update('users', {
                     id: user[0].id,
                     lastlogin: user[0].thislogin,
@@ -212,6 +227,7 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
             };
             newThisLogin();
             function newThisLogin() {
+                console.log("newThislogin");
                 $rootScope.loading = true;
                 thislogindate = {
                     thislogin: new Date().toString(),
@@ -221,6 +237,7 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
                     thislogin: thislogindate.thislogin
                 })
                     .then(function () {
+                        console.log("routing");
                         $location.path('/profile');
                         $rootScope.loading = false;
                     });
