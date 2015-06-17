@@ -7,7 +7,7 @@ var button_id = null;
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
-
+  
   'angularNumberPicker',
   'chart.js',
   'azure-mobile-service.module',
@@ -26,18 +26,9 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: '/templates/forms.html', controller: 'login', reloadOnSearch: false });
-    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false, });
-    $routeProvider.when('/profile', {
-        templateUrl: '/templates/profile.html',
-        reloadOnSearch: false,
-        controller: 'getuser',
-        resolve: {
-            'user': function (Azureservice) {
-                return Azureservice.getAll('users');
-            }
-        }
-    });
+    $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
+    $routeProvider.when('/profile', { templateUrl: '/templates/profile.html', reloadOnSearch: false });
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/newuser', {
@@ -70,7 +61,6 @@ app.config(function ($routeProvider) {
         controller: 'badgeController',
         reloadOnSearch: false,
         resolve: {
-            // Peaks saama vastava ID'ga sissekande
             'badges': function (Azureservice) {
                 return Azureservice.getAll('badges');
             }
@@ -177,7 +167,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
 
 app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
     $scope.selected = selected;
-
+ 
     var newFormModel = {
         id: button_id,
         name: selected.name,
@@ -190,7 +180,7 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
     };
 
     $scope.newFormModel = newFormModel;
-
+ 
     $scope.editForm = function () {
         $rootScope.loading = true;
         Azureservice.update('plant', $scope.newFormModel).then(function () {
@@ -211,19 +201,44 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
 
     try {
+        console.log("Trying", (user[0].name !== undefined));
         if (user[0].name !== undefined) {
-            $location.path('/profile');
             $rootScope.loading = false;
+            LoginTimeSwich();
+            function LoginTimeSwich() {
+                console.log("Login time switch", user[0].thislogin);
+                Azureservice.update('users', {
+                    id: user[0].id,
+                    lastlogin: user[0].thislogin,
+                })
+            };
+            newThisLogin();
+            function newThisLogin() {
+                console.log("new login time");
+                $rootScope.loading = true;
+                thislogindate = {
+                    thislogin: new Date().toString(),
+                };
+                Azureservice.update('users', {
+                    id: user[0].id,
+                    thislogin: thislogindate.thislogin
+                })
+                    .then(function () {
+                        $location.path('/profile');
+                        $rootScope.loading = false;
+                    });
+            }
         }
         throw "TypeError"; //user[0].name gives type error if no data is received from azure
 
-    }
-    catch (e) {
+    } catch (e) {
         // statements to handle any exceptions
+        console.log("catch:", e);
         var userModel = {
-            email: 'email',
-            name: 'name',
-            phone: 'number',
+            email: '',
+            name: '',
+            phone: '',
+            thislogin: new Date().toString(),
 
         };
         $scope.userModel = userModel;
@@ -236,17 +251,6 @@ app.controller('newuser', function ($scope, $rootScope, $location, Azureservice,
         }
     }
 });
-// get user data not working yet
-app.controller('getuser', function ($scope, user) {
-    console.log(user[0].name);
-    var userModel = {
-        email: 'email',
-        name: 'name',
-        phone: 'number',
-
-    };
-});
-
 app.controller('newplant', function ($scope, $rootScope, $location, Azureservice) {
     var formModel = {
         name: 'test',
@@ -283,7 +287,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
-
+ 
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
@@ -327,23 +331,20 @@ app.controller('chartCtrl', function ($scope, plantCount) {
 
 // Login controller
 app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
-    console.log("Login controller");
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
             Azureservice.login('facebook').then(function () {
                 $route.reload();
-                console.log('from login controller');
             })
         }
 
         $scope.logingo = function () {
             Azureservice.login('google').then(function () {
                 $route.reload();
-                console.log('from login controller');
             })
         }
     } else {
         $location.path('/newuser');
     }
-
+     
 });
