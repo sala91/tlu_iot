@@ -160,21 +160,38 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
 
 // controller to add data if user log\s in first time
 app.controller('newuser', function ($scope, $rootScope, $location, Azureservice, user) {
-   
+    
     try {
+        console.log("Trying", (user[0].name !== undefined));
         if (user[0].name !== undefined) {
-            $location.path('/profile');
             $rootScope.loading = false;
+            newLastLogin();
+            function newLastLogin() {
+                $rootScope.loading = true;
+                lastlogindate = {
+                    lastlogin: new Date().toString(),
+                };
+                console.log(lastlogindate.lastlogin.toString());
+                Azureservice.update('users', {
+                    id:user[0].id,
+                    lastlogin: lastlogindate.lastlogin
+                    })
+                    .then(function () {
+                    $location.path('/profile');
+                    $rootScope.loading = false;
+                });
+            }
         } 
         throw "TypeError"; //user[0].name gives type error if no data is received from azure
              
-    }
-    catch (e) {
+    }catch (e) {
         // statements to handle any exceptions
+        console.log("catch:", e);
         var userModel = {
-            email: 'email',
-            name: 'name',
-            phone: 'number',
+            email: '',
+            name: '',
+            phone: '',
+            lastlogin: new Date().toString(),
 
         };
         $scope.userModel = userModel;
@@ -272,19 +289,16 @@ app.controller('chartCtrl', function ($scope, plantCount) {
 
 // Login controller
 app.controller('login', function ($rootScope, $scope, $route, Azureservice, $location) {
-    console.log("Login controller");
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
                 Azureservice.login('facebook').then(function () {
                     $route.reload();
-                    console.log('from login controller');
             })
         }
 
         $scope.logingo = function () {
                 Azureservice.login('google').then(function () {
                     $route.reload();
-                    console.log('from login controller');
             })
         }
     } else {
