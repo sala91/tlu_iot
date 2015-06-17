@@ -1,3 +1,6 @@
+//  ID
+var button_id = null;
+
 // 
 // Here is how to define your module 
 // has dependent on mobile-angular-ui
@@ -47,6 +50,7 @@ app.config(function ($routeProvider) {
             }
         }
     });
+
     $routeProvider.when('/plantslist', {
         templateUrl: '/templates/plantslist.html',
         controller: 'plantslist',
@@ -75,26 +79,27 @@ app.config(function ($routeProvider) {
         controller: 'pdetail',
         resolve: {
             'plantdetail': function (Azureservice) {
-                return Azureservice.getById('plant', '0F55FE1F-B5FC-449A-AAF1-74FF4F1E4449');
+                return Azureservice.getById('plant', button_id);
             }
         }
     });
 
-    // Proov taimede informatsiooni kuvamiseks
-    $routeProvider.when('/plantinfo', {
-        templateUrl: '/templates/plantinfo.html',
-        controller: 'plantinfo',
+    $routeProvider.when('/editplant', {
+        templateUrl: '/templates/editplant.html',
+        controller: 'editPlant',
         reloadOnSearch: false,
         resolve: {
-            'plants': function (Azureservice) {
-                return Azureservice.getAll('plant');
+            // Peaks saama vastava ID'ga sissekande
+            'selected': function (Azureservice) {
+                return Azureservice.getById('plant', button_id);
+                //return Azureservice.getAll('plant');
             }
         }
     });
 
 });
 
-app.controller('pdetail', function ($scope, plantdetail) {
+app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
 
     //  Graafikud
@@ -103,15 +108,54 @@ app.controller('pdetail', function ($scope, plantdetail) {
     $scope.data = [
         [10, 14, 8, 10, 17, 21, 16],
     ];
-});
 
-// Mingi controller 'plantinfo' proovimiseks
-app.controller('plantinfo', function ($scope, plants) {
-    $scope.plants = plants;
+    $scope.buttonId = function (btnId) {
+        button_id = btnId;
+        //console.log(button_id);
+    };
+
 });
 
 app.controller('plantslist', function ($scope, plants) {
     $scope.plants = plants;
+    //  Plantslisti valiku ID
+    $scope.buttonId = function (btnId) {
+        button_id = btnId;
+        // Gets the correct ID of the button from here
+        //console.log(button_id);
+    };
+});
+
+app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
+    $scope.selected = selected;
+ 
+    var newFormModel = {
+        id: button_id,
+        name: selected.name,
+        raspberry_id: selected.raspberry_id,
+        humidity: selected.humidity,
+        min_number: selected.min_number,
+        max_temp: selected.max_number,
+        'private': selected.private,
+        about: selected.about
+    };
+
+    $scope.newFormModel = newFormModel;
+ 
+    $scope.editForm = function () {
+        $rootScope.loading = true;
+        Azureservice.update('plant', $scope.newFormModel).then(function () {
+            $location.path('/plantDetail');
+            $rootScope.loading = false;
+        });
+    };
+    $scope.deletePlant = function () {
+        $rootScope.loading = true;
+        Azureservice.del('plant', { id: button_id }).then(function () {
+            $location.path('/plantslist');
+            $rootScope.loading = false;
+        });
+    };
 });
 
 // controller to add data if user log\s in first time
@@ -211,17 +255,21 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
 });
 
 
+var temp_data = [15, 10, 5, 4, 3, 2, 1];
+var humi_data = [13, 8, 7, 6, 5, 4, 3];
+var sunl_data = [11, 6, 4, 3, 2, 2, 0];
+
 //	Graafik
 app.controller("LineCtrl", function ($scope) {
 
     $scope.labels = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
     $scope.series = ['Temp', 'Humidity', 'Sunlight'];
-    $scope.data = [
-        [0, 0, 0, 10, 0, 5, 0],
-        [5, 5, 5, 5, 5, 10, 5],
-        [10, 10, 2, 10, 10, 0, 10]
-    ];
+    $scope.data = [temp_data, humi_data, sunl_data];
 
+    $scope.buttonId = function (btnId) {
+        button_id = btnId;
+        //console.log(button_id);
+    };
 });
 
 app.controller('chartCtrl', function ($scope, plantCount) {

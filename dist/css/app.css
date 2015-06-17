@@ -3,12 +3,20 @@ h1 {
   padding: 0;
   margin: 10px 0;
 }
-
+h3.plant-name {
+    float:left;
+}
 #plant-info {
     padding:3px;
     margin:3px;
     top:5px;
     position:relative;
+}
+
+#notes-position {
+    position:relative;
+    float:left;
+    width:50%;
 }
 
 #btn-plantdetail {
