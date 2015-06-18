@@ -8,7 +8,7 @@ var user_id = null;
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
-
+  
   'angularNumberPicker',
   'chart.js',
   'azure-mobile-service.module',
@@ -153,8 +153,6 @@ app.controller('badgeController', function ($scope, Azureservice, plants, badges
     $scope.badges = badges;
     $scope.matchedBadges = matchedBadges;
 
-    var userId = plants[0].userId;
-    user_id = userId;
 });
 
 app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
@@ -201,7 +199,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
 
 app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
     $scope.selected = selected;
-
+ 
     var newFormModel = {
         id: button_id,
         name: selected.name,
@@ -214,7 +212,7 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
     };
 
     $scope.newFormModel = newFormModel;
-
+ 
     $scope.editForm = function () {
         $rootScope.loading = true;
         Azureservice.update('plant', $scope.newFormModel).then(function () {
@@ -323,12 +321,18 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
-
+    if (Azureservice.isLoggedIn()) {
+        $scope.UserLoggedIn = true;
+        console.log("logged true");
+    } else { }
+ 
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
+        document.getElementById('btm-nav-bar').style.display = 'none';
         $location.path('/');
     }
+
     /*
     //
     // 'Forms' screen  VIST EI KASUTA ENAM AGA POLE 100% KINDEL VEEL
@@ -370,17 +374,19 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
             Azureservice.login('facebook').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
 
         $scope.logingo = function () {
             Azureservice.login('google').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
     } else {
         $location.path('/newuser');
     }
-
+     
 });
