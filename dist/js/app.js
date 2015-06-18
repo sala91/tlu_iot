@@ -1,5 +1,6 @@
 //  ID
 var button_id = null;
+var user_id = null;
 
 // 
 // Here is how to define your module 
@@ -26,7 +27,7 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: '/templates/forms.html', controller: 'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
     $routeProvider.when('/profile', {
         templateUrl: '/templates/profile.html',
@@ -38,6 +39,7 @@ app.config(function ($routeProvider) {
             }
         }
     });
+
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/newuser', {
@@ -70,8 +72,14 @@ app.config(function ($routeProvider) {
         controller: 'badgeController',
         reloadOnSearch: false,
         resolve: {
+            'plants': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            },
             'badges': function (Azureservice) {
                 return Azureservice.getAll('badges');
+            },
+            'matchedBadges': function (Azureservice) {
+                return Azureservice.read('badges');
             }
         }
     });
@@ -112,10 +120,17 @@ app.config(function ($routeProvider) {
     });
 
 });
+
 app.controller('getuser', function ($scope, user) {
-    console.log(user);
     $scope.user = user;
+    //console.log(user[0].userId);
+
+    $scope.userId = function (uId) {
+        user_id = uId;
+        console.log(user_id);
+    };
 });
+
 app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
 
@@ -133,8 +148,11 @@ app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice,
 
 });
 
-app.controller('badgeController', function ($scope, badges) {
+app.controller('badgeController', function ($scope, Azureservice, plants, badges, matchedBadges) {
+    $scope.plants = plants;
     $scope.badges = badges;
+    $scope.matchedBadges = matchedBadges;
+
 });
 
 app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
@@ -144,6 +162,8 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
     $scope.buttonId = function (btnId) {
         button_id = btnId;
     };
+
+    var userId = plants[0].userId;
 
     /* Achievement 'Your very first plant' */
     if (plants.length >= 1) {
@@ -301,12 +321,18 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
+    if (Azureservice.isLoggedIn()) {
+        $scope.UserLoggedIn = true;
+        console.log("logged true");
+    } else { }
  
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
+        document.getElementById('btm-nav-bar').style.display = 'none';
         $location.path('/');
     }
+
     /*
     //
     // 'Forms' screen  VIST EI KASUTA ENAM AGA POLE 100% KINDEL VEEL
@@ -348,12 +374,14 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
             Azureservice.login('facebook').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
 
         $scope.logingo = function () {
             Azureservice.login('google').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
