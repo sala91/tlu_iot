@@ -303,12 +303,18 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
- 
+    if (Azureservice.isLoggedIn()) {
+        $scope.UserLoggedIn = true;
+        console.log("logged true");
+    } else { }
+
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
+        document.getElementById('btm-nav-bar').style.display = 'none';
         $location.path('/');
     }
+
     /*
     //
     // 'Forms' screen  VIST EI KASUTA ENAM AGA POLE 100% KINDEL VEEL
@@ -350,12 +356,14 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
     if (!Azureservice.isLoggedIn()) {
         $scope.loginfb = function () {
             Azureservice.login('facebook').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
 
         $scope.logingo = function () {
             Azureservice.login('google').then(function () {
+                document.getElementById('btm-nav-bar').style.display = 'block';
                 $route.reload();
             })
         }
