@@ -1,5 +1,6 @@
 //  ID
 var button_id = null;
+var user_id = null;
 
 // 
 // Here is how to define your module 
@@ -7,7 +8,7 @@ var button_id = null;
 // 
 var app = angular.module('MobileAngularUiExamples', [
   'ngRoute',
-  
+
   'angularNumberPicker',
   'chart.js',
   'azure-mobile-service.module',
@@ -26,7 +27,7 @@ app.constant('AzureMobileServiceClient', {
 // in order to avoid unwanted routing.
 // 
 app.config(function ($routeProvider) {
-    $routeProvider.when('/', { templateUrl: '/templates/forms.html',controller:'login', reloadOnSearch: false });
+    $routeProvider.when('/', { templateUrl: '/templates/forms.html', controller: 'login', reloadOnSearch: false });
     $routeProvider.when('/home', { templateUrl: '/templates/home.html', reloadOnSearch: false });
     $routeProvider.when('/profile', {
         templateUrl: '/templates/profile.html',
@@ -38,6 +39,7 @@ app.config(function ($routeProvider) {
             }
         }
     });
+
     $routeProvider.when('/newplant', { templateUrl: '/templates/newplant.html', controller: 'newplant', reloadOnSearch: false });
     $routeProvider.when('/plantDetail', { templateUrl: '/templates/plantDetail.html', reloadOnSearch: false });
     $routeProvider.when('/newuser', {
@@ -70,8 +72,14 @@ app.config(function ($routeProvider) {
         controller: 'badgeController',
         reloadOnSearch: false,
         resolve: {
+            'plants': function (Azureservice) {
+                return Azureservice.getAll('plant');
+            },
             'badges': function (Azureservice) {
                 return Azureservice.getAll('badges');
+            },
+            'matchedBadges': function (Azureservice) {
+                return Azureservice.read('badges');
             }
         }
     });
@@ -112,10 +120,17 @@ app.config(function ($routeProvider) {
     });
 
 });
+
 app.controller('getuser', function ($scope, user) {
     $scope.user = user;
-    //console.log(user);
+    //console.log(user[0].userId);
+
+    $scope.userId = function (uId) {
+        user_id = uId;
+        console.log(user_id);
+    };
 });
+
 app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice, plantdetail) {
     $scope.plantdetail = plantdetail;
 
@@ -133,8 +148,13 @@ app.controller('pdetail', function ($scope, $rootScope, $location, Azureservice,
 
 });
 
-app.controller('badgeController', function ($scope, badges) {
+app.controller('badgeController', function ($scope, Azureservice, plants, badges, matchedBadges) {
+    $scope.plants = plants;
     $scope.badges = badges;
+    $scope.matchedBadges = matchedBadges;
+
+    var userId = plants[0].userId;
+    user_id = userId;
 });
 
 app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
@@ -151,7 +171,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
     if (plants.length >= 1) {
         var exists = 0;
         for (var i = 0; i < badges.length; i++) {
-            if (!badges[i].name.indexOf('Your very first plant') && badges[i].userId == userId) {
+            if (!badges[i].name.indexOf('Your very first plant')) {
                 exists = 1;
             }
         }
@@ -165,7 +185,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
         var exists = 0;
         for (var i = 0; i < badges.length; i++) {
             //console.log(badges[i].name);
-            if (!badges[i].name.indexOf('PLANT PIMP') && badges[i].userId == userId) {
+            if (!badges[i].name.indexOf('PLANT PIMP')) {
                 console.log('You already own the badge!');
                 exists = 1;
                 console.log("Exists: " + exists);
@@ -181,7 +201,7 @@ app.controller('plantslist', function ($scope, Azureservice, plants, badges) {
 
 app.controller('editPlant', function ($scope, $rootScope, $location, Azureservice, selected) {
     $scope.selected = selected;
- 
+
     var newFormModel = {
         id: button_id,
         name: selected.name,
@@ -194,7 +214,7 @@ app.controller('editPlant', function ($scope, $rootScope, $location, Azureservic
     };
 
     $scope.newFormModel = newFormModel;
- 
+
     $scope.editForm = function () {
         $rootScope.loading = true;
         Azureservice.update('plant', $scope.newFormModel).then(function () {
@@ -303,7 +323,7 @@ app.controller('MainController', function ($rootScope, $scope, $route, $location
         $rootScope.loading = false;
     });
 
- 
+
     // Logoff feature
     $scope.logoff = function () {
         Azureservice.logout();
@@ -362,5 +382,5 @@ app.controller('login', function ($rootScope, $scope, $route, Azureservice, $loc
     } else {
         $location.path('/newuser');
     }
-     
+
 });
